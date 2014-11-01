@@ -1,0 +1,344 @@
+cljs workshop
+=============
+Andrey Antukh, <niwi@niwi.be>
+:toc: left
+:numbered:
+:source-highlighter: pygments
+:pygments-style: friendly
+
+
+Setup initial project
+---------------------
+
+Let start with
+~~~~~~~~~~~~~~
+
+[source, text]
+----
+git clone https://github.com/niwibe/cljs-workshop
+git checkout step0
+----
+
+This step consists on...
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Initial leiningen project template.
+- Add ring, compojure and other related dependencies.
+- Create routes and initial application entry point.
+- First run of hello world app.
+
+
+Initial project tree
+~~~~~~~~~~~~~~~~~~~~~
+
+[source, text]
+----
+resources/
+resources/public/
+resources/index.html
+src/
+src/clj/
+src/clj/cljsworkshop/
+src/clj/cljsworkshop/core.clj
+project.clj
+----
+
+
+Intial ring/compojure handlers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Ring handler consists in a simple function that receives a req (hash-map) and return a response (also hash-map).
+- Compojure add routing handlers and some response helpers.
+- jetty9 is a embedded http/application server.
+
+._clj/cljsworkshop/core.clj_
+[source, clojure]
+----
+(ns cljsworkshop.core
+  (:require [ring.adapter.jetty9 :refer [run-jetty]]
+            [compojure.core :refer :all]
+            [compojure.route :as route]
+            [compojure.response :refer [render]]
+            [clojure.java.io :as io]))
+
+(defn home
+  [req]
+  (render (io/resource "index.html") req))
+
+(defroutes app
+  (GET "/" [] home)
+  (route/resources "/static")
+  (route/not-found "<h1>Page not found</h1>"))
+
+(defn -main
+  [& args]
+  (run-jetty app {:port 5050}))
+----
+
+Initial *index.html* file
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+[source, html]
+----
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>CLJS Workshop</title>
+  </head>
+  <body>
+    <h1>Hello World</h1>
+  </body>
+</html>
+----
+
+
+
+
+First ClojureScript Hello World
+-------------------------------
+
+Let start with
+~~~~~~~~~~~~~~
+
+[source, text]
+----
+git reset --hard
+git checkout step1
+----
+
+New dependencies on *project.clj*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+._project.clj_
+[source, clojure]
+----
+:dependencies [;; ...
+               [org.clojure/clojurescript "0.0-2371"]
+               ;; ...]
+----
+
+
+*lein-cljsbuild* plugin is your friend
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+._project.clj_
+[source, clojure]
+----
+:plugins [[lein-cljsbuild "1.0.3"]]
+:cljsbuild {:builds
+            [{:id "app"
+              :source-paths ["src/cljs"]
+              :compiler {:output-to "resources/public/js/app.js"
+                         :optimizations :whitespace
+                         :pretty-print true}}]}
+----
+
+New ClojureScript file.
+~~~~~~~~~~~~~~~~~~~~~~~
+
+New tree structure on `src/` directory for clojurescript sources.
+
+[source, text]
+----
+src/cljs/
+src/cljs/cljsworkshop/
+src/cljs/cljsworkshop/core.cljs
+----
+
+
+Hello World in cljs
+~~~~~~~~~~~~~~~~~~~
+
+._project.clj_
+[source, clojure]
+----
+(defn set-html! [el content]
+  (set! (.-innerHTML el) content))
+
+(defn main
+  []
+  (let [content "Hello World from Clojure Script"
+        element (aget (js/document.getElementsByTagName "main") 0)]
+    (set-html! element content)))
+----
+
+
+*index.html* changes
+~~~~~~~~~~~~~~~~~~~~
+
+[source, html]
+----
+<body>
+  <main></main>
+  <script src="/static/js/app.js"></script>
+</body>
+----
+
+Compile our cljs file
+~~~~~~~~~~~~~~~~~~~~~
+
+[source, text]
+----
+[3/5.0.7]niwi@niwi:~/cljs-workshop> lein cljsbuild auto
+Compiling ClojureScript.
+Compiling "resources/public/js/app.js" from ["src/cljs"]...
+Successfully compiled "resources/public/js/app.js" in 3.396 seconds.
+----
+
+
+First DOM events
+----------------
+
+Let start with
+~~~~~~~~~~~~~~
+
+[source, text]
+----
+git reset --hard
+git checkout step2
+----
+
+
+*index.html* changes
+~~~~~~~~~~~~~~~~~~~~
+
+[source, html]
+----
+<main>
+  <section>
+    <span>Clicks: </span>
+    <span id="clicksnumber"><span>
+  </section>
+  <button id="button">Click me</button>
+</main>
+----
+
+New *main* function
+~~~~~~~~~~~~~~~~~~~
+
+[source, clojure]
+----
+(ns cljsworkshop.core
+  (:require [goog.events :as events]
+            [goog.dom :as dom]))
+
+(defn main
+  []
+  (let [counter (atom 0)
+        button  (dom/getElement "button")
+        display (dom/getElement "clicksnumber")]
+
+    ;; Set initial value
+    (set! (.-innerHTML display) @counter)
+
+    ;; Assign event listener
+    (events/listen button "click"
+                   (fn [event]
+                     ;; Increment the value
+                     (swap! counter inc)
+                     ;; Set new value in display element
+                     (set! (.-innerHTML display) @counter)))))
+
+(main)
+----
+
+New stuff
+~~~~~~~~~
+
+- ClojureScript uses Google Closure Library for modules/namespace: *each ClojureScript file reprensents a google closure module*
+- The `:require` statement on `ns` can loads any google closure module or your defined module that the compiller can find in the path (see _project.clj_ for path...)
+- Google Closure Library comes with ClojureScript. You don't need add it as dependency.
+- Works in advanced mode of google closure compiler (that eliminates unused code).
+
+More documentation:
+
+- http://himera.herokuapp.com/synonym.html
+
+
+Routing in the browser
+----------------------
+
+Let start with
+~~~~~~~~~~~~~~
+
+[source, text]
+----
+git reset --hard
+git checkout step3
+----
+
+Add *secretary* dependency
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*secretary* is a routing library for clojure script.
+
+._project.clj_
+[source, clojure]
+----
+:dependencies [;; ...
+               [secretary "1.2.1"]]
+----
+
+
+*core.cljs* changes
+~~~~~~~~~~~~~~~~~~~
+
+[source, clojure]
+----
+(ns cljsworkshop.core
+  (:require-macros [secretary.core :refer [defroute]])
+  (:require [goog.events :as events]
+            [goog.dom :as dom]
+            [secretary.core :as secretary])
+  (:import goog.History))
+
+(def app (dom/getElement "app"))
+
+(defn set-html! [el content]
+  (set! (.-innerHTML el) content))
+
+(defroute home-path "/" []
+  (set-html! app "<h1>Hello World from home page.</h1>"))
+
+(defroute some-path "/:param" [param]
+  (let [message (str "<h1>Parameter in url: <small>" param "</small>!</h1>")]
+    (set-html! app message)))
+
+(defroute "*" []
+  (set-html! app "<h1>Not Found</h1>"))
+
+(defn main
+  []
+  ;; Set secretary config for use the hashbang prefix
+  (secretary/set-config! :prefix "#")
+
+  ;; Attach event listener to history instance.
+  (let [history (History.)]
+    (events/listen history "navigate"
+                   (fn [event]
+                     (secretary/dispatch! (.-token event))))
+    (.setEnabled history true)))
+
+(main)
+----
+
+New stuff
+~~~~~~~~~
+
+- ClojureScript macros should be written in Clojure (not ClojureScript) but should emit ClojureScript code.
+- Should be imported separatedly, using `(:require-macros ...)` statement on `ns`.
+- Google closure classes should be imported with `(:import ...)` statement.
+
+
+First steps with Ajax
+---------------------
+
+Let start with
+~~~~~~~~~~~~~~
+
+[source, text]
+----
+git reset --hard
+git checkout step4
+----
