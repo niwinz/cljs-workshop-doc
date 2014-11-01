@@ -43,6 +43,31 @@ src/clj/cljsworkshop/core.clj
 project.clj
 ----
 
+Initial *project.clj*
+~~~~~~~~~~~~~~~~~~~~~
+
+[source, clojure]
+----
+(defproject cljsworkshop "0.1.0-SNAPSHOT"
+  :description "FIXME: write description"
+  :url "http://example.com/FIXME"
+  :license {:name "BSD (2-Clause)"
+            :url "http://opensource.org/licenses/BSD-2-Clause"}
+  :dependencies [[org.clojure/clojure "1.6.0"]
+
+                 ;; Backend dependencies
+                 [compojure "1.2.1"]
+                 [ring/ring-core "1.3.1" :exclusions [javax.servlet/servlet-api]]
+                 [ring/ring-servlet "1.3.1" :exclusions [javax.servlet/servlet-api]]
+                 [ring/ring-defaults "0.1.2"]
+
+                 [javax.servlet/javax.servlet-api "3.1.0"]
+                 [info.sunng/ring-jetty9-adapter "0.7.2"]]
+
+  :source-paths ["src/clj"]
+  :main cljsworkshop.core)
+----
+
 
 Intial ring/compojure handlers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -405,7 +430,7 @@ Let start with
 [source, text]
 ----
 git reset --hard
-git checkout step4
+git checkout step5
 ----
 
 
