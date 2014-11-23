@@ -6,6 +6,22 @@ Andrey Antukh, <niwi@niwi.be>
 :source-highlighter: pygments
 :pygments-style: friendly
 
+Why ClojureScript
+-----------------
+
+- Clojure is designed as guest language (unlike funscript or similar, it not intends to translate
+  host code to js, you can not import java.util.Date on clojurescript...)
+- Language with own semantics (not like coffeescript, typescript, ...)
+- Good host interoperability.
+- Batteries included (clojure runtime & google closure library)
+- Expressivenes
+- Functional.
+- Lisp.
+- Macros.
+- Google Closure Compiller (advanced code compiling with dead code elimination)
+- core.async (coroutines and csp as a library)
+- ... much more.
+
 
 Setup initial project
 ---------------------
@@ -159,6 +175,7 @@ New dependencies on *project.clj*
                          :pretty-print true}}]}
 ----
 
+
 New ClojureScript file.
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -200,6 +217,7 @@ Hello World in cljs
 </body>
 ----
 
+
 Compile our cljs file
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -211,6 +229,298 @@ Compiling "resources/public/js/app.js" from ["src/cljs"]...
 Successfully compiled "resources/public/js/app.js" in 3.396 seconds.
 ----
 
+
+First steps with ClojureScript
+------------------------------
+
+Print to console
+~~~~~~~~~~~~~~~~
+
+[source, clojure]
+----
+(.log js/console "hello world")
+----
+
+[source, clojure]
+----
+(enable-console-print!)
+(println "hello world")
+----
+
+Modules
+~~~~~~~
+
+.Declare module
+[source, clojure]
+----
+(ns my.library)
+----
+
+.Require a module
+[source, clojure]
+----
+(ns my.library
+  (:require [my.other :as other]))
+----
+
+
+Variables
+~~~~~~~~~
+
+.Top level
+[source, clojure]
+----
+(def myvar "foo")
+----
+
+.Local
+[source, clojure]
+----
+(let [myvar "foo"]
+  (println myvar))
+----
+
+
+Functions
+~~~~~~~~~
+
+.Simple function definition
+[source, clojure]
+----
+(defn foo
+  [a b c]
+  c)
+
+(foo 1) ;; WARNING: function called with incorrect
+        ;; number of arguments
+
+(foo 1 2 3) ;; => 3
+----
+
+.Dispatch on arity
+[source, clojure]
+----
+(defn foo
+  ([a] "one")
+  ([a b] "two")
+  ([a b c] "three"))
+
+(foo 1) ;; => "one"
+(foo 1 2) ;; => "two"
+(foo 1 2 3) ;; => "three"
+
+;; Under advanced compilation direct dispatch to
+;; arity. No arguments object manipulation
+----
+
+.Variable number of arguments
+[source, clojure]
+----
+(defn foo
+  [a b & rest]
+  rest)
+
+(foo 1 2 3) ;; => [3]
+(foo 1 2 3 4 5) ;; => [3 4 5]
+----
+
+.Named parameters & default values
+[source, clojure]
+----
+(defn foo
+  [& {:keys [bar baz]
+      :or {bar "default1"
+           baz "default2"}}]
+  (str bar "-" baz))
+
+(foo) ;; => "default1-default2"
+(foo :bar 1) ;; => "1-default2"
+(foo :bar 1 :baz 2) ;; => "1-2"
+----
+
+Equality
+~~~~~~~~
+
+Is always based on value. CLJS does not have coercive equality.
+
+[source, javascript]
+----
+// == operator is coercive
+1 == "1" // => true
+
+// sometimes based on value
+{} == {} // => false
+
+["a"] === ["a"] // => false
+----
+
+[source, clojure]
+----
+(= 1 "1") ;; => false
+(= {} {}) ;; => true
+(= ["a"] ["a"]) ;; => true
+----
+
+
+Immutable locals
+~~~~~~~~~~~~~~~~
+
+In cljs locals are immutable:
+
+.This code throws an error:
+[source, clojure]
+----
+(let [x 2]
+  (set! x 3))
+----
+
+
+Dynamic binding
+~~~~~~~~~~~~~~~
+
+.This code throws an error:
+[source, clojure]
+----
+(def ^:dynamic x 5)
+
+(defn print-value
+  []
+  (println "Current value:" x))
+
+(print-value)
+(binding [x 10]
+  (print-value))
+(print-value)
+
+;; Will result in:
+;; Current value: 5
+;; Current value: 10
+;; Current value: 5
+----
+
+
+Destructuring
+~~~~~~~~~~~~~
+
+.Positional destructuring.
+[source, clojure]
+----
+(def color [255 255 100 0.5])
+
+(let [[r g _ a] color]
+  (println r)
+  (println a))
+
+;; Will result in:
+;; 255
+;; 0.5
+----
+
+.Hash map keys destructuring
+[source, clojure]
+----
+(def m {:first "Bob"
+        :middle "J"
+        :last "Smith"})
+
+(let [{:keys [first last]} m]
+  (println first)
+  (println last))
+
+;; Will result in:
+;; Bob
+;; Smith
+----
+
+
+Expression problem
+~~~~~~~~~~~~~~~~~~
+
+[source, clojure]
+----
+;; For example say you'd like to use RegExps
+;; as functions
+
+(extend-type js/RegExp
+  IFn
+  (-invoke
+   ([this s]
+     (re-matches this s))))
+
+(filter #"foo.*" ["foo" "bar" "foobar"])
+;; => ("foo" "foobar")
+----
+
+Interoprability
+~~~~~~~~~~~~~~~
+
+Create javascript objects
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.Clojure
+[source, clojure]
+----
+(def foo (js-obj "bar" "baz"))
+----
+
+.Javascript
+[source, javascript]
+----
+var foo = {bar: "baz"};
+----
+
+Property access
+^^^^^^^^^^^^^^^
+
+.Clojure
+[source, clojure]
+----
+(set! (.-bar foo) "baz")
+(.log js/console (.-bar foo))
+
+(aset foo "abc" 17)
+(.log js/console (aget foo "abc"))
+----
+
+.Javascript
+[source, javascript]
+----
+foo.bar = "baz";
+console.log(foo.bar);
+
+foo["abc"] = 17;
+console.log(foo["abc"]);
+----
+
+
+Conversions beween cljs and js
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.Convert cljs types to js using `clj->js` function
+[source, clojure]
+----
+(let [a {:a 1 :b {:c 1}}]
+  (clj->js a))
+----
+
+.Convert js types to cljs using `js->clj` function
+[source, clojure]
+----
+(defn get-names [people]
+  (let [people (js->clj people)
+        names (map "name" people)]
+    (clj->js names)))
+----
+
+.Using reader macro for conver cljs to js:
+[source, clojure]
+----
+(let [a #js [1 2 3]]
+  (println (aget a 1)))
+
+;; Will result in:
+;; 2
+----
 
 First DOM events
 ----------------
