@@ -134,102 +134,6 @@ Initial *index.html* file
 ----
 
 
-
-
-First ClojureScript Hello World
--------------------------------
-
-Let start with
-~~~~~~~~~~~~~~
-
-[source, text]
-----
-git reset --hard
-git checkout step1
-----
-
-New dependencies on *project.clj*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-._project.clj_
-[source, clojure]
-----
-:dependencies [;; ...
-               [org.clojure/clojurescript "0.0-2371"]
-               ;; ...]
-----
-
-
-*lein-cljsbuild* plugin is your friend
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-._project.clj_
-[source, clojure]
-----
-:plugins [[lein-cljsbuild "1.0.3"]]
-:cljsbuild {:builds
-            [{:id "app"
-              :source-paths ["src/cljs"]
-              :compiler {:output-to "resources/public/js/app.js"
-                         :optimizations :whitespace
-                         :pretty-print true}}]}
-----
-
-
-New ClojureScript file.
-~~~~~~~~~~~~~~~~~~~~~~~
-
-New tree structure on `src/` directory for clojurescript sources.
-
-[source, text]
-----
-src/cljs/
-src/cljs/cljsworkshop/
-src/cljs/cljsworkshop/core.cljs
-----
-
-
-Hello World in cljs
-~~~~~~~~~~~~~~~~~~~
-
-._project.clj_
-[source, clojure]
-----
-(defn set-html! [el content]
-  (set! (.-innerHTML el) content))
-
-(defn main
-  []
-  (let [content "Hello World from Clojure Script"
-        element (aget (js/document.getElementsByTagName "main") 0)]
-    (set-html! element content)))
-----
-
-
-*index.html* changes
-~~~~~~~~~~~~~~~~~~~~
-
-[source, html]
-----
-<body>
-  <main></main>
-  <script src="/static/js/app.js"></script>
-</body>
-----
-
-
-Compile our cljs file
-~~~~~~~~~~~~~~~~~~~~~
-
-[source, text]
-----
-[3/5.0.7]niwi@niwi:~/cljs-workshop> lein cljsbuild auto
-Compiling ClojureScript.
-Compiling "resources/public/js/app.js" from ["src/cljs"]...
-Successfully compiled "resources/public/js/app.js" in 3.396 seconds.
-----
-
-
 First steps with ClojureScript
 ------------------------------
 
@@ -378,7 +282,6 @@ In cljs locals are immutable:
 Dynamic binding
 ~~~~~~~~~~~~~~~
 
-.This code throws an error:
 [source, clojure]
 ----
 (def ^:dynamic x 5)
@@ -397,7 +300,6 @@ Dynamic binding
 ;; Current value: 10
 ;; Current value: 5
 ----
-
 
 Destructuring
 ~~~~~~~~~~~~~
@@ -449,6 +351,44 @@ Expression problem
 
 (filter #"foo.*" ["foo" "bar" "foobar"])
 ;; => ("foo" "foobar")
+----
+
+Multimethods
+~~~~~~~~~~~~
+
+Polymorphism a la carte.
+
+.Define a multimethod
+[source, clojure]
+----
+(defmulti say-hello
+  (fn [person]
+    (:lang person :en)))
+
+(defmethod say-hello :en
+  [person]
+  (format "Hello %s" (:name person)))
+
+(defmethod say-hello :es
+  [person]
+  (format "Hola %s" (:name person)))
+----
+
+.Playing with multimethod
+[source, clojure]
+----
+(def person-alex {:lang :es :name "Alex"})
+(def person-yen {:lang :en :name "Yen"})
+(def person-anon {:name "Anonymous"}) 
+
+(say-hello person-alex)
+;; => "Hola Alex"
+
+(say-hello person-yen)
+;; => "Hello Yen"
+
+(say-hello person-anon)
+;; => "Hello Anonimous"
 ----
 
 Interoprability
@@ -521,6 +461,107 @@ Conversions beween cljs and js
 ;; Will result in:
 ;; 2
 ----
+
+More
+~~~~
+
+http://himera.herokuapp.com/synonym.html
+
+
+First ClojureScript Hello World
+-------------------------------
+
+Let start with
+~~~~~~~~~~~~~~
+
+[source, text]
+----
+git reset --hard
+git checkout step1
+----
+
+New dependencies on *project.clj*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+._project.clj_
+[source, clojure]
+----
+:dependencies [;; ...
+               [org.clojure/clojurescript "0.0-2371"]
+               ;; ...]
+----
+
+
+*lein-cljsbuild* plugin is your friend
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+._project.clj_
+[source, clojure]
+----
+:plugins [[lein-cljsbuild "1.0.3"]]
+:cljsbuild {:builds
+            [{:id "app"
+              :source-paths ["src/cljs"]
+              :compiler {:output-to "resources/public/js/app.js"
+                         :optimizations :whitespace
+                         :pretty-print true}}]}
+----
+
+
+New ClojureScript file.
+~~~~~~~~~~~~~~~~~~~~~~~
+
+New tree structure on `src/` directory for clojurescript sources.
+
+[source, text]
+----
+src/cljs/
+src/cljs/cljsworkshop/
+src/cljs/cljsworkshop/core.cljs
+----
+
+
+Hello World in cljs
+~~~~~~~~~~~~~~~~~~~
+
+._project.clj_
+[source, clojure]
+----
+(defn set-html! [el content]
+  (set! (.-innerHTML el) content))
+
+(defn main
+  []
+  (let [content "Hello World from Clojure Script"
+        element (aget (js/document.getElementsByTagName "main") 0)]
+    (set-html! element content)))
+----
+
+
+*index.html* changes
+~~~~~~~~~~~~~~~~~~~~
+
+[source, html]
+----
+<body>
+  <main></main>
+  <script src="/static/js/app.js"></script>
+</body>
+----
+
+
+Compile our cljs file
+~~~~~~~~~~~~~~~~~~~~~
+
+[source, text]
+----
+[3/5.0.7]niwi@niwi:~/cljs-workshop> lein cljsbuild auto
+Compiling ClojureScript.
+Compiling "resources/public/js/app.js" from ["src/cljs"]...
+Successfully compiled "resources/public/js/app.js" in 3.396 seconds.
+----
+
+
 
 First DOM events
 ----------------
