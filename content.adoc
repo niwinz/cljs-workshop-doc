@@ -5,6 +5,7 @@ Andrey Antukh, <niwi@niwi.be>
 :numbered:
 :source-highlighter: pygments
 :pygments-style: friendly
+:sectlinks:
 
 Why ClojureScript
 -----------------
@@ -777,12 +778,13 @@ Introduction to core.async
 
 Is a CSP library with steroids.
 
+
+Async code looks sync
+~~~~~~~~~~~~~~~~~~~~~
+
 Let start with future ES7 (EcmaScript 7) proposal: `async` and `await`
 
-Let start introducing a problem using ES5 (EcmaScript 5) or shortly javascript of
-today:
-
-
+.Having defined this two utils functions...
 [source, javascript]
 ----
 function timeout(ms) {
@@ -805,7 +807,11 @@ function httpGet(url) {
 }
 ----
 
-Now having defined utils function, let try define a logic that:
+Solution using ES5
+^^^^^^^^^^^^^^^^^^
+
+Let start introducing a problem using ES5 (EcmaScript 5) or shortly javascript of
+today:
 
 1. Request 1 url page.
 2. Wait 1second
@@ -827,7 +833,11 @@ function doStuff() {
      });
    })
 }
+----
 
+.Now you can use it so:
+[source, javascript]
+----
 doStuff().then(function(result) {
   console.log(result.response1);
   console.log(result.response2);
@@ -835,6 +845,10 @@ doStuff().then(function(result) {
 ----
 
 Obviously, it can be done better, but nobody will save us from callbacs.
+
+
+Solution using ES7
+^^^^^^^^^^^^^^^^^^
 
 But, what is cooking for ES7? (ES7? but ES6 still not ready? WTF)
 
@@ -850,7 +864,11 @@ async function doStuff() {
   return {response1: response1,
           response2: response2};
 }
+----
 
+.Now you can use it so:
+[source, javascript]
+----
 (async function() {
   var result = await doStuff()
   console.log(result.response1);
@@ -859,6 +877,100 @@ async function doStuff() {
 ----
 
 Now looks much better.
+
+Solution using cljs and core.async
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Now having the background of ES7 example, let see same thing but using
+core.async library with clojure script.
+
+.Define the missing util function.
+[source, clojure]
+----
+(defn http-get [uri]
+  (let [out (chan)
+        req (XhrIo. (Uri. uri))]
+    (events/listen req "success" #(put! out (.getResponseText (.-target %))))
+    (.send req (Uri. uri))
+    out))
+----
+
+.Define the doStuff like function with main logic.
+[source, clojure]
+----
+(defn do-stuff
+  []
+  (go
+    (let [response1 (<! (http-get "http://page1/"))
+          _         (<! (timeout 1000))
+          response2 (<! (http-get "http://page2/"))]
+      {:response1 response1
+       :response2 response2})))
+----
+
+.Now see an example of how use it.
+[source, clojure]
+----
+(go
+  (let [result (<! (do-stuff))]
+    (.log js/console (.-response1 result))
+    (.log js/console (.-response2 result))))
+----
+
+A little reference of basic core.async components
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The *go* function/macro
+^^^^^^^^^^^^^^^^^^^^^^^
+
+[source, clojure]
+----
+(go
+  [... do something asynchronously ...])
+----
+
+- always return a channel.
+- put in a returned channel the restul of last expression.
+- executes asynchronously.
+
+The *chan* function
+^^^^^^^^^^^^^^^^^^^
+
+[source, clojure]
+----
+(chan)
+----
+
+- creates a new channel
+- does not support nil values
+- nil return value means channel is closed
+- support different buffering strategies: fixed size, unbound (default), sliding, dropping.
+
+
+The *<!* and *>!* functions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+[source, clojure]
+----
+(go
+  (<! (timeout 100))
+  (.log js/console "finished"))
+----
+
+- `<!` represents a callback-less `take!`
+- `>!` represents a callback-less `put!`
+- in clojure them have blocking version of them: `<!!` and `>!!` and they does not
+  requires of go macro, because they blocks the current thread.
+
+Other resources
+^^^^^^^^^^^^^^^
+
+- http://clojure.com/blog/2013/06/28/clojure-core-async-channels.html
+- http://yobriefca.se/blog/2014/06/01/combining-and-controlling-channels-with-core-dot-asyncs-merge-and-mix/
+- http://yobriefca.se/blog/2014/06/04/publish-and-subscribe-with-core-dot-asyncs-pub-and-sub/
+- http://www.purelyfunctional.tv/core-async
+- http://www.lispcast.com/elm-frp-in-core-async
+
 
 Ajax with core.async
 --------------------
@@ -871,7 +983,6 @@ Let start with
 git reset --hard
 git checkout step5
 ----
-
 
 Why
 ~~~
