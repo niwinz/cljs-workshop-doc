@@ -391,6 +391,7 @@ Polymorphism a la carte.
 ;; => "Hello Anonimous"
 ----
 
+
 Interoprability
 ~~~~~~~~~~~~~~~
 
@@ -771,6 +772,93 @@ git checkout step4
     (events/listen (dom/getElement "searchbutton") "click" on-search-click)))
 ----
 
+Introduction to core.async
+--------------------------
+
+Is a CSP library with steroids.
+
+Let start with future ES7 (EcmaScript 7) proposal: `async` and `await`
+
+Let start introducing a problem using ES5 (EcmaScript 5) or shortly javascript of
+today:
+
+
+[source, javascript]
+----
+function timeout(ms) {
+  return new Promise(function(resolve) {
+    setTimeout(resolve, ms);
+  });
+}
+
+function httpGet(url) {
+  return new Promise(function(resolve) {
+    var req = new XMLHttpRequest();
+    req.open("GET", url, false);
+    req.send(null);
+    req.onreadystatechange = function() {
+      if (req.readyState == 4) {
+        resolve(xhr.responseText);
+      }
+    }
+  });
+}
+----
+
+Now having defined utils function, let try define a logic that:
+
+1. Request 1 url page.
+2. Wait 1second
+3. Request 2 url page.
+4. Return result both results.
+
+[source, javascript]
+----
+function doStuff() {
+   httpGet("http://page1/").then(function(response) {
+    return timeout(1000).then(function() {
+      return response;
+    });
+   })
+   .then(function(response1) {
+     return httpGet("http://page2/").then(function(response2) {
+       return {response1: response1,
+               response2: response2};
+     });
+   })
+}
+
+doStuff().then(function(result) {
+  console.log(result.response1);
+  console.log(result.response2);
+});
+----
+
+Obviously, it can be done better, but nobody will save us from callbacs.
+
+But, what is cooking for ES7? (ES7? but ES6 still not ready? WTF)
+
+.Same example but using the draft proposal for ES7 but is available for years in C#
+[source, javascript]
+----
+async function doStuff() {
+  var response1, response2;
+
+  response1 = await httpGet("http://page1/");
+  await timeout(1000):
+  response2 = await httpGet("http://page2/");
+  return {response1: response1,
+          response2: response2};
+}
+
+(async function() {
+  var result = await doStuff()
+  console.log(result.response1);
+  console.log(result.response2);
+})();
+----
+
+Now looks much better.
 
 Ajax with core.async
 --------------------
