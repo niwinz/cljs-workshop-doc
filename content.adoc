@@ -7,6 +7,7 @@ Andrey Antukh, <niwi@niwi.be>
 :pygments-style: friendly
 :sectlinks:
 
+
 Why ClojureScript
 -----------------
 
@@ -116,6 +117,7 @@ Intial ring/compojure handlers
   [& args]
   (run-jetty app {:port 5050}))
 ----
+
 
 Initial *index.html* file
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1053,3 +1055,77 @@ Add *core.async* dependency
 ----
 
 Now the code looks sync.
+
+
+First app with Om
+-----------------
+
+Let start with
+~~~~~~~~~~~~~~
+
+[source, text]
+----
+git reset --hard
+git checkout step6
+----
+
+Why
+~~~
+
+- Reactjs (functional approach for rendering dom)
+- Global state management facilities built in.
+- Customizable semantics. Fine grained control over how components store state.
+- Out of the box snapshotable and undoable and these operations have no implementation
+  complexity and little overhead.
+
+
+First om component
+~~~~~~~~~~~~~~~~~~
+
+Befor see a complex app, we'll try understand the basic of om components.
+
+[source, clojure]
+----
+(ns mysamplens
+  (:require [om.core :as om :include-macros true]
+            [om.dom :as dom :include-macros true]))
+
+(defn mycomponent
+  [app owner]
+  (reify
+    ;; Mainly serves for debugging. Specifies the
+    ;; display name of react component on react
+    ;; debugging tools for Chrome.
+    om/IDisplayName
+    (display-name [_]
+      "my-component-name")
+
+    ;; Set the initial component state.
+    om/IInitState
+    (init-state [_]
+      {:message "Hello world"})
+
+    ;; Render the component with current local state.
+    om/IRenderState
+    (render-state [_ {:keys [message]}]
+      (dom/div nil message))))
+----
+
+*_reify_, what is this?*
+
+_reify_ creates an anonymos object that implement one or more protocols.
+
+_om_ components consists in any object that implements the `om/IRender` or
+`om/IRenderState` protocols. Implementations for other protocols is optional.
+
+In previous examples we have used a few number of protocols. Om comes with few other
+but them comes out of this first example scope.
+
+*Now, having defined a compoment, it a time to mount it.
+
+[source, clojure]
+----
+(defonce state {})
+(om/root mycomponent state {:target (dom/getElement "body")})
+----
+
