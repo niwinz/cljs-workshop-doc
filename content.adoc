@@ -131,23 +131,27 @@ Intial ring/compojure handlers
             [compojure.response :refer [render]]
             [clojure.java.io :as io]))
 
+;; This is a handler that returns the 
+;; contents of `resources/index.html`
 (defn home
   [req]
   (render (io/resource "index.html") req))
 
+;; Defines a handler that acts as router
 (defroutes app
   (GET "/" [] home)
   (route/resources "/static")
   (route/not-found "<h1>Page not found</h1>"))
 
+;; The main entry point of application.
 (defn -main
   [& args]
   (run-jetty app {:port 5050}))
 ----
 
 
-Initial *index.html* file
-~~~~~~~~~~~~~~~~~~~~~~~~
+Initial _resources/index.html_ file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 [source, html]
 ----
@@ -161,6 +165,22 @@ Initial *index.html* file
     <h1>Hello World</h1>
   </body>
 </html>
+----
+
+
+Run your first clojure web application
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As we declared the main entry point on our `project.clj`, now we only should
+execute a _run_ command of leiningen:
+
+[source, bash]
+----
+$ lein run
+2014-12-08 14:03:49.623:INFO::main: Logging initialized @877ms
+2014-12-08 14:03:52.992:INFO:oejs.Server:main: jetty-9.2.3.v20140905
+2014-12-08 14:03:53.016:INFO:oejs.ServerConnector:main: Started ServerConnector@3149409c{HTTP/1.1}{0.0.0.0:5050}
+2014-12-08 14:03:53.017:INFO:oejs.Server:main: Started @4283ms
 ----
 
 
