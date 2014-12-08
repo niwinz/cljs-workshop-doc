@@ -1,5 +1,5 @@
-cljs workshop
-=============
+ClojureScript Tutorial
+======================
 Andrey Antukh, <niwi@niwi.be>
 :toc: left
 :numbered:
