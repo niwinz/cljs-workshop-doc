@@ -187,6 +187,9 @@ $ lein run
 First steps with ClojureScript
 ------------------------------
 
+Is a little introduction to ClojureScript language. Is a proper step before starting working with it.
+
+
 Print to console
 ~~~~~~~~~~~~~~~~
 
