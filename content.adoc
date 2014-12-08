@@ -1306,6 +1306,16 @@ Add the persistence logic to our tasklist app
 Final bonus: browser enabled repl
 ---------------------------------
 
+Let start with
+~~~~~~~~~~~~~~
+
+[source, text]
+----
+git reset --hard
+git checkout step9
+----
+
+
 Add _weasel_ as dependency with other minor changes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
