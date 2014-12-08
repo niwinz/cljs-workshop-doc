@@ -47,7 +47,7 @@ Why ClojureScript
 - Functional.
 - Lisp.
 - Macros.
-- Google Closure Compiller (advanced code compiling with dead code elimination)
+- Google Closure Compiler (advanced code compiling with dead code elimination)
 - core.async (coroutines and csp as a library)
 - ... much more.
 
@@ -654,7 +654,7 @@ New stuff
 ~~~~~~~~~
 
 - ClojureScript uses Google Closure Library for modules/namespace: *each ClojureScript file reprensents a google closure module*
-- The `:require` statement on `ns` can loads any google closure module or your defined module that the compiller can find in the path (see _project.clj_ for path...)
+- The `:require` statement on `ns` can loads any google closure module or your defined module that the compiler can find in the path (see _project.clj_ for path...)
 - Google Closure Library comes with ClojureScript. You don't need add it as dependency.
 - Works in advanced mode of google closure compiler (that eliminates unused code).
 
