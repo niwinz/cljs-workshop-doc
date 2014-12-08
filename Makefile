@@ -1,3 +1,3 @@
 all: doc
 doc:
-	asciidoctor -o index.html content.adoc
+	asciidoctor -o index.html README.adoc

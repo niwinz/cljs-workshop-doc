@@ -131,7 +131,7 @@ Intial ring/compojure handlers
             [compojure.response :refer [render]]
             [clojure.java.io :as io]))
 
-;; This is a handler that returns the 
+;; This is a handler that returns the
 ;; contents of `resources/index.html`
 (defn home
   [req]
@@ -203,6 +203,7 @@ Print to console
 (enable-console-print!)
 (println "hello world")
 ----
+
 
 Modules
 ~~~~~~~
@@ -295,6 +296,7 @@ Functions
 (foo :bar 1 :baz 2) ;; => "1-2"
 ----
 
+
 Equality
 ~~~~~~~~
 
@@ -354,6 +356,7 @@ Dynamic binding
 ;; Current value: 5
 ----
 
+
 Destructuring
 ~~~~~~~~~~~~~
 
@@ -405,6 +408,7 @@ Expression problem
 (filter #"foo.*" ["foo" "bar" "foobar"])
 ;; => ("foo" "foobar")
 ----
+
 
 Multimethods
 ~~~~~~~~~~~~
@@ -463,6 +467,7 @@ Create javascript objects
 var foo = {bar: "baz"};
 ----
 
+
 Property access
 ^^^^^^^^^^^^^^^
 
@@ -516,6 +521,9 @@ Conversions beween cljs and js
 ;; 2
 ----
 
+NOTE: the #js reader macroo is not recursive.
+
+
 More
 ~~~~
 
@@ -534,6 +542,7 @@ git reset --hard
 git checkout step1
 ----
 
+
 New dependencies on *project.clj*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -541,7 +550,7 @@ New dependencies on *project.clj*
 [source, clojure]
 ----
 :dependencies [;; ...
-               [org.clojure/clojurescript "0.0-2371"]
+               [org.clojure/clojurescript "0.0-2411"]
                ;; ...]
 ----
 
