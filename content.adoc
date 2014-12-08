@@ -382,7 +382,7 @@ Polymorphism a la carte.
 ----
 (def person-alex {:lang :es :name "Alex"})
 (def person-yen {:lang :en :name "Yen"})
-(def person-anon {:name "Anonymous"}) 
+(def person-anon {:name "Anonymous"})
 
 (say-hello person-alex)
 ;; => "Hola Alex"
@@ -1154,3 +1154,56 @@ Little introduction
   a concrete state of the application.
 - The union of ClojureScript and Reactjs makes some task, that is usually considered very complex,
   very easy and painless, such as the time traveling or the undo in a few lines of code.
+
+
+How it works
+~~~~~~~~~~~~
+
+Desgining the application with global state management facilities of om, we can easy make a
+snapshot of the current state.
+
+In Clojure(Script) an atom can be listened for changes:
+
+[source, clojure]
+----
+;; Global applicatioon state
+(def tasklist-state (atom {:entries []}))
+
+;; Undo application state. An atom that will store
+;; the snapshots of tasklist-state initialized with
+;; initial @tasklist-state.
+(def undo-state (atom {:entries [@tasklist-state]})
+
+;; Watch a tasklist-state changes and snapshot them
+;; into undo-state.
+(add-watch tasklist-state :history
+  (fn [_ _ _ n]
+    (let [entries (:entries @undo-state)]
+      (when-not (= (last entries) n)
+        (swap! undo-state #(update-in % [:entries] conj n))))))
+----
+
+Now, each change in our application, is saved as snapshot in an other atom, and
+with simple button we can revert the last change and restore the previous one.
+
+.For it, we are created an other om component...
+[source, clojure]
+----
+(defn do-undo
+  [app]
+  (when (> (count (:entries @app)) 1)
+    ;; remove the last spapshot from the undo list.
+    (om/transact! app :entries pop)
+
+    ;; Restore the last snapshot into tasklist
+    ;; application state
+    (reset! tasklist-state (last (:entries @undo-state)))))
+
+(defn undo
+  [app owner]
+  (reify
+    om/IRender
+    (render [_]
+      (html [:input {:type "button" :default-value "Undo"
+                     :on-click (fn [_] (do-undo app))}]))))
+----
