@@ -1057,8 +1057,8 @@ Add *core.async* dependency
 Now the code looks sync.
 
 
-First app with Om
------------------
+Hello World from Om component
+-----------------------------
 
 Let start with
 ~~~~~~~~~~~~~~
@@ -1088,7 +1088,7 @@ Befor see a complex app, we'll try understand the basic of om components.
 ----
 (ns mysamplens
   (:require [om.core :as om :include-macros true]
-            [om.dom :as dom :include-macros true]))
+            [sablono.core :as html :refer-macros [html]]))
 
 (defn mycomponent
   [app owner]
@@ -1098,17 +1098,20 @@ Befor see a complex app, we'll try understand the basic of om components.
     ;; debugging tools for Chrome.
     om/IDisplayName
     (display-name [_]
-      "my-component-name")
+      "my-component")
 
     ;; Set the initial component state.
     om/IInitState
     (init-state [_]
-      {:message "Hello world"})
+      {:message "Hello world from local state"})
 
     ;; Render the component with current local state.
     om/IRenderState
     (render-state [_ {:keys [message]}]
-      (dom/div nil message))))
+      (html [:section
+             [:div message]
+             [:div (:message app)]]))))
+
 ----
 
 *_reify_, what is this?*
@@ -1125,7 +1128,29 @@ but them comes out of this first example scope.
 
 [source, clojure]
 ----
-(defonce state {})
-(om/root mycomponent state {:target (dom/getElement "body")})
+(defonce state {:message "Hello world from global state."})
+
+;; "app" is a id of dom element at index.html
+(let [el (gdom/getElement "app")]
+  (om/root mycomponent state {:target el}))
 ----
 
+Time traveling with Om
+----------------------
+
+Let start with
+~~~~~~~~~~~~~~
+
+[source, text]
+----
+git reset --hard
+git checkout step7
+----
+
+Little introduction
+~~~~~~~~~~~~~~~~~~~
+
+- The state of aplication is serializable, that makes easy and in deterministic way to reproduce
+  a concrete state of the application.
+- The union of ClojureScript and Reactjs makes some task, that is usually considered very complex,
+  very easy and painless, such as the time traveling or the undo in a few lines of code.
