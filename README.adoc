@@ -587,7 +587,7 @@ src/cljs/cljsworkshop/core.cljs
 Hello World in cljs
 ~~~~~~~~~~~~~~~~~~~
 
-._project.clj_
+._core.cljs_
 [source, clojure]
 ----
 (defn set-html! [el content]
@@ -623,7 +623,6 @@ Compiling ClojureScript.
 Compiling "resources/public/js/app.js" from ["src/cljs"]...
 Successfully compiled "resources/public/js/app.js" in 3.396 seconds.
 ----
-
 
 
 First DOM events
@@ -678,8 +677,6 @@ New *main* function
                      (swap! counter inc)
                      ;; Set new value in display element
                      (set! (.-innerHTML display) @counter)))))
-
-(main)
 ----
 
 New stuff
@@ -689,10 +686,6 @@ New stuff
 - The `:require` statement on `ns` can loads any google closure module or your defined module that the compiler can find in the path (see _project.clj_ for path...)
 - Google Closure Library comes with ClojureScript. You don't need add it as dependency.
 - Works in advanced mode of google closure compiler (that eliminates unused code).
-
-More documentation:
-
-- http://himera.herokuapp.com/synonym.html
 
 
 Routing in the browser
