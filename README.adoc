@@ -189,6 +189,23 @@ First steps with ClojureScript
 
 Is a little introduction to ClojureScript language. Is a proper step before starting working with it.
 
+Data Types
+~~~~~~~~~~
+
+.Types
+|===
+| Type name | Representation
+| String    | `"Hello World"`
+| Long      | `2`
+| Float     | `2.4`
+| Keyword   | `:foo`
+| Map       | `{:foo "bar"}`
+| Vector    | `[1 2 "3"]`
+| List      | `(1 2 "3")`
+| Set       | `#{1 2 3}`
+| Regex     | `#"^\w+$"`
+|===
+
 
 Print to console
 ~~~~~~~~~~~~~~~~
@@ -410,6 +427,11 @@ Expression problem
 ----
 
 
+More resources:
+
+- http://www.ibm.com/developerworks/library/j-clojure-protocols/
+
+
 Multimethods
 ~~~~~~~~~~~~
 
@@ -452,6 +474,7 @@ Polymorphism a la carte.
 Interoprability
 ~~~~~~~~~~~~~~~
 
+
 Create javascript objects
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -477,6 +500,7 @@ Property access
 (set! (.-bar foo) "baz")
 (.log js/console (.-bar foo))
 
+;; aset means array set
 (aset foo "abc" 17)
 (.log js/console (aget foo "abc"))
 ----
@@ -521,7 +545,7 @@ Conversions beween cljs and js
 ;; 2
 ----
 
-NOTE: the #js reader macroo is not recursive.
+NOTE: the #js reader macro is not recursive.
 
 
 More
