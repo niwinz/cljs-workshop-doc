@@ -1631,6 +1631,78 @@ And observe that your web is running like with previos compilation mode but
 loads only one little js.
 
 
+Bonus: using third party libraries
+----------------------------------
+
+Introduction
+~~~~~~~~~~~~
+
+Is well known that not all third party libraries like jQuery, momentjs or react works
+out of the box with closure compiler.
+
+But is not a problem. Clojurescript thanks to some closure compiler options allow easy
+path for use external libraries.
+
+For this purpose it exposes `:foreign-libs` and `:externs` compiler options.
+
+The first one, allows setup the dependencies and the module for third party library. And
+the second allows setup a file that helps closure compiler to not mangling symbol names
+that corresponds to third party library usage.
+
+
+Let start with
+~~~~~~~~~~~~~~
+
+[source, text]
+----
+git reset --hard
+git checkout step11
+----
+
+
+Integrating momentjs
+~~~~~~~~~~~~~~~~~~~~
+
+Add this options to your build configurations:
+
+[source, clojure]
+----
+:foreign-libs [{:file "js/moment.js"
+                :file-min "js/moment.min.js"
+                :provides ["cljsworkshop.moment"]}]
+:externs ["js/moment.min.js"]
+:closure-warnings {:externs-validation :off}
+----
+
+Externs file is a file with special only definition javascript. They are very tedios to write
+and in this case we can use the minified source as externs file.
+
+Using the minified source as externs file raises a lot of warnings, that in majority of cases
+we can ignore.
+
+
+Use momentjs in our app
+~~~~~~~~~~~~~~~~~~~~~~~
+
+For use the momentjs in our application, you should add it in
+our require part of the ns macro:
+
+[source, clojure]
+----
+(ns cljsworkshop.core
+  (:require [...]
+            [cljsworkshop.moment :as moment]))
+----
+
+Independently of the alias used in requirement statement, the moment variable is set globally
+and it should be used through the js special prefix. Like this
+
+[source, clojure]
+----
+(def now (js/moment))
+----
+
+
 Other Om resources
 ------------------
 
