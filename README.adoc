@@ -1432,7 +1432,7 @@ Crete a repl setup file
 (repl/repl* (browser/repl-env)
   {:output-dir "out"
    :optimizations :none
-   :cache-analysis true
+   :cache-analysis false
    :source-map true})
 ----
 
@@ -1515,7 +1515,7 @@ Crete a repl setup file
 (repl/repl* (node/repl-env)
   {:output-dir "out"
    :optimizations :none
-   :cache-analysis true
+   :cache-analysis false
    :source-map true})
 ----
 
@@ -1595,8 +1595,8 @@ Replace your old build configuration on your *project.clj* with this:
               :output-dir "resources/public/js/out-devel"
               :source-map true
               :optimizations :none
-              :cache-analysis true
-              :asset-path "/static/js/out"
+              :cache-analysis false
+              :asset-path "/static/js/out-devel"
               :main cljsworkshop.core
               :pretty-print true}}
   {:id "prod"
@@ -1606,8 +1606,8 @@ Replace your old build configuration on your *project.clj* with this:
               :source-map "resources/public/js/app.js.map"
               :closure-warnings {:externs-validation :off}
               :optimizations :advanced
-              :cache-analysis true
-              :asset-path "/static/js/out"
+              :cache-analysis false
+              :asset-path "/static/js/out-prod"
               :main cljsworkshop.core
               :pretty-print false}}]})
 ----
