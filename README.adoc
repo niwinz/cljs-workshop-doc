@@ -1292,6 +1292,16 @@ but them comes out of this first example scope.
 Time traveling with Om
 ----------------------
 
+
+Introduction
+~~~~~~~~~~~~
+
+- The state of aplication is serializable, that makes easy and in deterministic way to reproduce
+  a concrete state of the application.
+- The union of ClojureScript and Reactjs makes some task, that is usually considered very complex,
+  very easy and painless, such as the time traveling or the undo in a few lines of code.
+
+
 Let start with
 ~~~~~~~~~~~~~~
 
@@ -1300,15 +1310,6 @@ Let start with
 git reset --hard
 git checkout step7
 ----
-
-
-Little introduction
-~~~~~~~~~~~~~~~~~~~
-
-- The state of aplication is serializable, that makes easy and in deterministic way to reproduce
-  a concrete state of the application.
-- The union of ClojureScript and Reactjs makes some task, that is usually considered very complex,
-  very easy and painless, such as the time traveling or the undo in a few lines of code.
 
 
 How it works
