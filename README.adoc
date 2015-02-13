@@ -1240,6 +1240,18 @@ git reset --hard
 git checkout step6
 ----
 
+Add dependencies
+~~~~~~~~~~~~~~~~
+
+._project.clj_
+[source, clojure]
+----
+:dependencies [;; ...
+               [org.omcljs/om "0.8.8"]
+               [prismatic/om-tools "0.3.10"]]
+----
+
+
 First om component
 ~~~~~~~~~~~~~~~~~~
 
@@ -1249,7 +1261,7 @@ Before see a more complex app, we'll try understand the basic of om components.
 ----
 (ns mysamplens
   (:require [om.core :as om]
-            [om.dom :as dom]))
+            [om-tools.dom :as dom]))
 
 (defn mycomponent
   [app owner]
@@ -1263,8 +1275,8 @@ Before see a more complex app, we'll try understand the basic of om components.
     om/IRenderState
     (render-state [_ {:keys [message]}]
       (dom/section
-        (dom/div nil message)
-        (dom/div nil (:message app))))))
+        (dom/div message)
+        (dom/div (:message app))))))
 ----
 
 *_reify_, what is this?*
@@ -1360,14 +1372,18 @@ with simple button we can revert the last change and restore the previous one.
   (reify
     om/IRender
     (render [_]
-      (html [:input {:type "button" :default-value "Undo"
-                     :on-click (fn [_] (do-undo app))}]))))
+      (dom/section {:class "undo"
+                    :style {:padding "5px"
+                            :border "1px solid #ddd"}}
+        (dom/section {:class "buttons"}
+          (dom/input {:type "button"
+                      :default-value "Undo"
+                      :on-click (fn[_] (do-undo state))}))))))
 ----
 
 
 Persisting Om state
 -------------------
-
 
 Introduction
 ~~~~~~~~~~~~
