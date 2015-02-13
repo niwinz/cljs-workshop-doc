@@ -576,7 +576,7 @@ New dependencies on *project.clj*
 [source, clojure]
 ----
 :dependencies [;; ...
-               [org.clojure/clojurescript "0.0-2816"]
+               [org.clojure/clojurescript "0.0-2843"]
                ;; ...]
 ----
 
@@ -617,6 +617,8 @@ src/cljs/cljsworkshop/core.cljs
 Hello World in cljs
 ~~~~~~~~~~~~~~~~~~~
 
+A simple main function that sets a helloworld as html in one dom element:
+
 ._core.cljs_
 [source, clojure]
 ----
@@ -634,6 +636,8 @@ Hello World in cljs
 *index.html* changes
 ~~~~~~~~~~~~~~~~~~~~
 
+Adapt our template for make it compatible for our example:
+
 [source, html]
 ----
 <body>
@@ -648,7 +652,7 @@ Compile our cljs file
 
 [source, text]
 ----
-[3/5.0.7]niwi@niwi:~/cljs-workshop> lein cljsbuild auto
+[3/5.0.7]niwi@niwi:~/cljs-workshop> lein cljsbuild once
 Compiling ClojureScript.
 Compiling "resources/public/js/app.js" from ["src/cljs"]...
 Successfully compiled "resources/public/js/app.js" in 3.396 seconds.
@@ -657,6 +661,13 @@ Successfully compiled "resources/public/js/app.js" in 3.396 seconds.
 
 First DOM events
 ----------------
+
+Introduction
+~~~~~~~~~~~~
+
+This section shows a basic way to access to dom and dom events using
+google closure library.
+
 
 Let start with
 ~~~~~~~~~~~~~~
@@ -671,6 +682,14 @@ git checkout step2
 *index.html* changes
 ~~~~~~~~~~~~~~~~~~~~
 
+Adapt our initial template to something that we can use for dom events
+examples. It consists in two pieces:
+
+- One button for increment the counter.
+- One span for show the current value of counter.
+
+
+._/resources/index.html_
 [source, html]
 ----
 <main>
@@ -684,6 +703,8 @@ git checkout step2
 
 New *main* function
 ~~~~~~~~~~~~~~~~~~~
+
+Change the main function to something like this:
 
 [source, clojure]
 ----
@@ -709,6 +730,7 @@ New *main* function
                      (set! (.-innerHTML display) @counter)))))
 ----
 
+
 New stuff
 ~~~~~~~~~
 
@@ -720,6 +742,15 @@ New stuff
 
 Routing in the browser
 ----------------------
+
+Introduction
+~~~~~~~~~~~~
+
+Little preview of routing in the browser. Some javascript frameworks comes with own solution, but in
+this case we simply use an library dedicated to routing: secretary.
+
+Clojurescript community have other libraries but this one is the most easy understand for newcomers.
+
 
 Let start with
 ~~~~~~~~~~~~~~
@@ -733,7 +764,7 @@ git checkout step3
 Add *secretary* dependency
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*secretary* is a routing library for clojure script.
+Add the corresponding dependency entry:
 
 ._project.clj_
 [source, clojure]
@@ -745,6 +776,8 @@ Add *secretary* dependency
 
 *core.cljs* changes
 ~~~~~~~~~~~~~~~~~~~
+
+Adapt our cljs code to something like this:
 
 [source, clojure]
 ----
@@ -796,6 +829,16 @@ New stuff
 First steps with Ajax
 ---------------------
 
+Introduction
+~~~~~~~~~~~~
+
+This step introduces some experiments with ajax. It uses a google closure library facilities
+for make easy JSONP requests to the wikipedia.
+
+This is a simple demostration on how can it be done, using plain callback style code. But in future
+step you will discover better ways to do it.
+
+
 Let start with
 ~~~~~~~~~~~~~~
 
@@ -820,7 +863,6 @@ git checkout step4
   (:import goog.History
            goog.Uri
            goog.net.Jsonp))
-
 
 (def search-url "http://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=")
 (def home-html
@@ -1010,7 +1052,7 @@ core.async library with clojure script.
 ----
 
 
-You can see that the code that is asyncrono by nature, it seems to be like synchronous.
+You can see that the code that is async by nature, it seems to be like synchronous.
 
 
 A little reference of basic core.async components
@@ -1073,6 +1115,13 @@ Other resources
 Ajax with core.async
 --------------------
 
+Introduction
+~~~~~~~~~~~~
+
+This step tries reproduce the examples from step4 (ajax related) but using core.async
+for make the logic look like sync, removing visually accidental complexity of continuations/callbacks.
+
+
 Let start with
 ~~~~~~~~~~~~~~
 
@@ -1081,6 +1130,7 @@ Let start with
 git reset --hard
 git checkout step5
 ----
+
 
 Why
 ~~~
@@ -1094,6 +1144,8 @@ Why
 Add *core.async* dependency
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Add the corresponding dependency of core.async on our project.clj:
+
 ._project.clj_
 [source, clojure]
 ----
@@ -1104,6 +1156,8 @@ Add *core.async* dependency
 
 *core.cljs* changes
 ~~~~~~~~~~~~~~~~~~~
+
+Convert our code from previos step to something like this:
 
 .Partial content from _core.cljs_
 [source, clojure]
@@ -1162,6 +1216,21 @@ A synchronous code makes it easier to reason about itself.
 Hello World from Om component
 -----------------------------
 
+Introduction
+~~~~~~~~~~~~
+
+This is a first step that introduces *Om*.
+
+Why:
+^^^^
+
+- Reactjs (functional approach for rendering dom)
+- Global state management facilities built in.
+- Customizable semantics. Fine grained control over how components store state.
+- Out of the box snapshotable and undoable and these operations have no implementation
+  complexity and little overhead.
+
+
 Let start with
 ~~~~~~~~~~~~~~
 
@@ -1171,37 +1240,20 @@ git reset --hard
 git checkout step6
 ----
 
-Why
-~~~
-
-- Reactjs (functional approach for rendering dom)
-- Global state management facilities built in.
-- Customizable semantics. Fine grained control over how components store state.
-- Out of the box snapshotable and undoable and these operations have no implementation
-  complexity and little overhead.
-
-
 First om component
 ~~~~~~~~~~~~~~~~~~
 
-Befor see a complex app, we'll try understand the basic of om components.
+Before see a more complex app, we'll try understand the basic of om components.
 
 [source, clojure]
 ----
 (ns mysamplens
-  (:require [om.core :as om :include-macros true]
-            [sablono.core :as html :refer-macros [html]]))
+  (:require [om.core :as om]
+            [om.dom :as dom]))
 
 (defn mycomponent
   [app owner]
   (reify
-    ;; Mainly serves for debugging. Specifies the
-    ;; display name of react component on react
-    ;; debugging tools for Chrome.
-    om/IDisplayName
-    (display-name [_]
-      "my-component")
-
     ;; Set the initial component state.
     om/IInitState
     (init-state [_]
@@ -1210,10 +1262,9 @@ Befor see a complex app, we'll try understand the basic of om components.
     ;; Render the component with current local state.
     om/IRenderState
     (render-state [_ {:keys [message]}]
-      (html [:section
-             [:div message]
-             [:div (:message app)]]))))
-
+      (dom/section
+        (dom/div nil message)
+        (dom/div nil (:message app))))))
 ----
 
 *_reify_, what is this?*
