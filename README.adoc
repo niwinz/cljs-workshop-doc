@@ -311,9 +311,9 @@ Functions
            baz "default2"}}]
   (str bar "-" baz))
 
-(foo) ;; => "default1-default2"
-(foo :bar 1) ;; => "1-default2"
 (foo :bar 1 :baz 2) ;; => "1-2"
+(foo :bar 1) ;; => "1-default2"
+(foo) ;; => "default1-default2"
 ----
 
 
