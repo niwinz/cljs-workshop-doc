@@ -55,8 +55,8 @@ Why ClojureScript
 Setup initial project
 ---------------------
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -559,8 +559,8 @@ http://himera.herokuapp.com/synonym.html
 First ClojureScript Hello World
 -------------------------------
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -669,8 +669,8 @@ This section shows a basic way to access to DOM and DOM events using
 https://developers.google.com/closure/library/[Google Closure Library].
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -752,8 +752,8 @@ this case we simply use an library dedicated to routing: https://github.com/gf3/
 ClojureScript community have other libraries but this one is the most easy understand for newcomers.
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -839,8 +839,8 @@ This is a simple demostration on how can it be done, using plain callback style 
 step you will discover better ways to do it.
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -920,7 +920,7 @@ Before start with core.async, we will try to solve one simple problem:
 Solution using ES5
 ^^^^^^^^^^^^^^^^^^
 
-Let start introducing a problem using https://es5.github.io/[ES5] (ECMAScript 5) or shortly JavaScript of
+Let's start introducing a problem using https://es5.github.io/[ES5] (ECMAScript 5) or shortly JavaScript of
 today. For it, firstly define the following utils functions:
 
 [source, javascript]
@@ -1015,7 +1015,7 @@ Notes:
 Solution using cljs and core.async
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Now having the background of ES7 example, let see same thing but using
+Now having the background of ES7 example, let's see same thing but using
 core.async library with ClojureScript.
 
 .Define the missing util function.
@@ -1122,8 +1122,8 @@ This step tries reproduce the examples from step4 (AJAX related) but using core.
 for make the logic look like sync, removing visually accidental complexity of continuations/callbacks.
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -1231,8 +1231,8 @@ Why:
   complexity and little overhead.
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -1314,8 +1314,8 @@ Introduction
   very easy and painless, such as the time traveling or the undo in a few lines of code.
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -1393,8 +1393,8 @@ For it we will use the previous example and HTML5 https://developer.mozilla.org/
 (via the https://funcool.github.io/hodgepodge/[hodgepodge] library).
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -1465,8 +1465,8 @@ offers an abstraction for run a REPL in different evaluation environments.
 *In this section we will see, how to use a browser as evaluation environment.*
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -1635,12 +1635,12 @@ Introduction
 At this moment, we have compiled ClojureScript for development friendly environment. And
 it is ok, but now it's time to deploy our application.
 
-As we known, ClojureScript uses the Google Closure Compiler. Let see how we can configure
+As we known, ClojureScript uses the Google Closure Compiler. Let's see how we can configure
 the production ready builds.
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -1719,8 +1719,8 @@ the second allows setup a file that helps Closure compiler to not mangling symbo
 that corresponds to third party library usage.
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
