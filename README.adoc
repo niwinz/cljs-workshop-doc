@@ -26,7 +26,7 @@ It includes:
 - First contact with Om/React.
 - Working with Om and time traveling.
 - Working with Om and peristent state.
-- Little bonus: browser enabled REPL.
+- Little bonus: browser-enabled REPL.
 
 Transversal:
 
@@ -1029,7 +1029,7 @@ core.async library with ClojureScript.
     out))
 ----
 
-.Define the doStuff like function with main logic.
+.Define the doStuff-like function with main logic.
 [source, clojure]
 ----
 (defn do-stuff
@@ -1118,7 +1118,7 @@ AJAX with core.async
 Introduction
 ~~~~~~~~~~~~
 
-This step tries to reproduce the examples from step4 (AJAX related) but using core.async
+This step tries to reproduce the examples from step4 (AJAX-related) but using core.async
 to make the logic look like sync, removing visually accidental complexity of continuations/callbacks.
 
 
@@ -1226,7 +1226,7 @@ Why:
 
 - https://facebook.github.io/react/[React] (functional approach for rendering DOM).
 - Global state management facilities built in.
-- Customizable semantics. Fine grained control over how components store state.
+- Customizable semantics. Fine-grained control over how components store state.
 - Out of the box snapshotable and undoable and these operations have no implementation
   complexity and little overhead.
 
@@ -1449,7 +1449,7 @@ Add the persistence logic to our tasklist app
 ----
 
 
-Bonus: browser enabled REPL
+Bonus: browser-enabled REPL
 ---------------------------
 
 Introduction
@@ -1564,7 +1564,7 @@ Continue from *step9*
 Introduction
 ~~~~~~~~~~~~
 
-Browser REPL is awesome if you are building a web app, but it is slightly tedious if
+Browser-enabled REPL is awesome if you are building a web app, but it is slightly tedious if
 you are building a library, requiring a browser for something that doesn't need it.
 
 For it, exists other evaluation environments like https://nodejs.org/[Node.js] or Java 8 http://en.wikipedia.org/wiki/Nashorn_(JavaScript_engine)[Nashorn] JavaScript
@@ -1626,17 +1626,17 @@ ClojureScript:cljs.user> (str/lower-case "Foo Bar")
 ----
 
 
-Bonus: production ready builds
+Bonus: production-ready builds
 ------------------------------
 
 Introduction
 ~~~~~~~~~~~~
 
-At this moment, we have compiled ClojureScript for development friendly environments. And
+At this moment, we have compiled ClojureScript for development-friendly environments. And
 it is ok, but now it's time to deploy our application.
 
 As we know, ClojureScript uses the Google Closure Compiler. Let's see how we can configure
-the production ready builds.
+the production-ready builds.
 
 
 Let's start with
@@ -1700,13 +1700,13 @@ And observe that your app is running like with previous compilation mode but
 loads only one little .js file.
 
 
-Bonus: using third party libraries
+Bonus: using third-party libraries
 ----------------------------------
 
 Introduction
 ~~~~~~~~~~~~
 
-Is well known that not all third party libraries like https://jquery.com/[jQuery], http://momentjs.com/[Moment.js] or React work
+Is well known that not all third-party libraries like https://jquery.com/[jQuery], http://momentjs.com/[Moment.js] or React work
 out of the box with the Closure compiler.
 
 But it is not a problem. ClojureScript thanks to some Closure compiler options allow easy
@@ -1714,9 +1714,9 @@ path for use external libraries.
 
 For this purpose it exposes the `:foreign-libs` and `:externs` compiler options.
 
-The first one, allows setup the dependencies and the module for third party library. And
+The first one, allows setup the dependencies and the module for third-party library. And
 the second allows setup a file that helps Closure compiler to not mangling symbol names
-that corresponds to third party library usage.
+that corresponds to third-party library usage.
 
 
 Let's start with
