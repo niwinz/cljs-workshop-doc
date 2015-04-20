@@ -10,14 +10,14 @@ Andrey Antukh, <niwi@niwi.be>
 Introduction
 ------------
 
-This tutorial consists on to provide an introduction to clojurescript from very basic setup, to more
+This tutorial consists on to provide an introduction to ClojureScript from very basic setup, to more
 complex application in little incremental steps.
 
 It includes:
 
-- Setup initial clojure app layout.
-- Setup initial clojurescript app layout.
-- First contact to clojurescript language.
+- Setup initial Clojure app layout.
+- Setup initial ClojureScript app layout.
+- First contact to ClojureScript language.
 - Working with dom events.
 - Working with routing in the browser.
 - Working with ajax requests.
@@ -39,7 +39,7 @@ Why ClojureScript
 -----------------
 
 - ClojureScript is designed as guest language (unlike funscript or similar, it not intends to translate
-  host code to js, you can not import java.util.Date on clojurescript...)
+  host code to js, you can not import java.util.Date on ClojureScript...)
 - Language with own semantics (not like coffeescript, typescript, ...)
 - Good host interoperability.
 - Batteries included (ClojureScript runtime & google closure library)
@@ -170,7 +170,7 @@ Initial _resources/index.html_ file
 ----
 
 
-Run your first clojure web application
+Run your first Clojure web application
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As we declared the main entry point on our `project.clj`, now we only should
@@ -604,7 +604,7 @@ New dependencies on *project.clj*
 New ClojureScript file.
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-New tree structure on `src/` directory for clojurescript sources.
+New tree structure on `src/` directory for ClojureScript sources.
 
 [source, text]
 ----
@@ -627,7 +627,7 @@ A simple main function that sets a helloworld as html in one dom element:
 
 (defn main
   []
-  (let [content "Hello World from Clojure Script"
+  (let [content "Hello World from ClojureScript"
         element (aget (js/document.getElementsByTagName "main") 0)]
     (set-html! element content)))
 ----
@@ -749,7 +749,7 @@ Introduction
 Little preview of routing in the browser. Some javascript frameworks comes with own solution, but in
 this case we simply use an library dedicated to routing: secretary.
 
-Clojurescript community have other libraries but this one is the most easy understand for newcomers.
+ClojureScript community have other libraries but this one is the most easy understand for newcomers.
 
 
 Let start with
@@ -1016,7 +1016,7 @@ Solution using cljs and core.async
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Now having the background of ES7 example, let see same thing but using
-core.async library with clojure script.
+core.async library with ClojureScript.
 
 .Define the missing util function.
 [source, clojure]
@@ -1098,7 +1098,7 @@ The *<!* and *>!* functions
 
 - `<!` represents a callback-less `take!`
 - `>!` represents a callback-less `put!`
-- in clojure them have blocking version of them: `<!!` and `>!!` and they does not
+- in Clojure them have blocking version of them: `<!!` and `>!!` and they does not
   requires of go macro, because they blocks the current thread.
 
 
@@ -1458,7 +1458,7 @@ One of the reasons that Clojure rocks is that it has a REPL which gives develope
 the most dynamic development experience possible. We would like to support this 
 dynamic development experience in every environment where JavaScript runs.
 
-There are many interesting environments in which JavaScript can run. And clojurescript
+There are many interesting environments in which JavaScript can run. And ClojureScript
 offers an abstraction for run a repl in different evaluation environments.
 
 *In this section we will see, how to use a browser as evaluation environment.*
@@ -1540,7 +1540,7 @@ To quit, type: :cljs/quit
 
 And now navigate to your public page!
 
-It will automatically connects to the repl and you will be able evaluate clojurescript 
+It will automatically connects to the repl and you will be able evaluate ClojureScript
 code in the browser.
 
 .Try evaluate the current app state
@@ -1631,10 +1631,10 @@ Bonus: production ready builds
 Introduction
 ~~~~~~~~~~~~
 
-At this moment, we have compiled clojurescript for development friendly environment. And
+At this moment, we have compiled ClojureScript for development friendly environment. And
 it is ok, but now it's time to deploy our application.
 
-As we known, clojurescript uses google closure as compiler. Let see how we can configure
+As we known, ClojureScript uses google closure as compiler. Let see how we can configure
 the production ready builds.
 
 
@@ -1708,7 +1708,7 @@ Introduction
 Is well known that not all third party libraries like jQuery, momentjs or react works
 out of the box with closure compiler.
 
-But is not a problem. Clojurescript thanks to some closure compiler options allow easy
+But is not a problem. ClojureScript thanks to some closure compiler options allow easy
 path for use external libraries.
 
 For this purpose it exposes `:foreign-libs` and `:externs` compiler options.
