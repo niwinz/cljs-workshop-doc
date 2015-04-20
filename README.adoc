@@ -32,7 +32,7 @@ Transversal:
 
 - Little touch on Google Closure Library along all tutorial.
 - ClojureScript features (not explained on the first contact with language).
-- Some differences with Clojure.
+- Some differences between Clojure and ClojureScript.
 
 
 Why ClojureScript
@@ -42,7 +42,7 @@ Why ClojureScript
   host code to js, you can not import java.util.Date on clojurescript...)
 - Language with own semantics (not like coffeescript, typescript, ...)
 - Good host interoperability.
-- Batteries included (clojure runtime & google closure library)
+- Batteries included (ClojureScript runtime & google closure library)
 - Expressivenes
 - Functional.
 - Lisp.
@@ -480,7 +480,7 @@ Interoprability
 Create javascript objects
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.Clojure
+.ClojureScript
 [source, clojure]
 ----
 (def foo (js-obj "bar" "baz"))
@@ -496,7 +496,7 @@ var foo = {bar: "baz"};
 Property access
 ^^^^^^^^^^^^^^^
 
-.Clojure
+.ClojureScript
 [source, clojure]
 ----
 (set! (.-bar foo) "baz")
