@@ -61,6 +61,7 @@ Let start with
 [source, text]
 ----
 git clone https://github.com/niwibe/cljs-workshop
+cd cljs-workshop
 git checkout step0
 ----
 
