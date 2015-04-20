@@ -10,53 +10,53 @@ Andrey Antukh, <niwi@niwi.be>
 Introduction
 ------------
 
-This tutorial consists on to provide an introduction to clojurescript from very basic setup, to more
+This tutorial provides an introduction to ClojureScript from very basic setup, to a more
 complex application in little incremental steps.
 
 It includes:
 
-- Setup initial clojure app layout.
-- Setup initial clojurescript app layout.
-- First contact to clojurescript language.
-- Working with dom events.
+- Set up initial Clojure app layout.
+- Set up initial ClojureScript app layout.
+- First contact with the ClojureScript language.
+- Working with DOM events.
 - Working with routing in the browser.
-- Working with ajax requests.
+- Working with AJAX requests.
 - First contact with core.async.
-- Working with events and ajax using core.async.
-- First contact with om/reactjs.
-- Working with om and timetraveling.
-- Working with om and peristent state.
-- Little bonus: browser enabled repl.
+- Working with events and AJAX using core.async.
+- First contact with Om/React.
+- Working with Om and time traveling.
+- Working with Om and peristent state.
+- Little bonus: browser-enabled REPL.
 
-Transversal:
+We also touch upon:
 
-- Little touch on Google Closure Library along all tutorial.
+- Google Closure Library along all tutorial.
 - ClojureScript features (not explained on the first contact with language).
-- Some differences with Clojure.
+- Some differences between Clojure and ClojureScript.
 
 
 Why ClojureScript
 -----------------
 
-- Clojure is designed as guest language (unlike funscript or similar, it not intends to translate
-  host code to js, you can not import java.util.Date on clojurescript...)
-- Language with own semantics (not like coffeescript, typescript, ...)
+- ClojureScript is designed as a guest language--unlike https://github.com/ZachBray/FunScript[FunScript] or similar, it doesn't intend to translate
+  host code to JavaScript; you cannot import `java.util.Date` in ClojureScript...
+- Language with own semantics (not like http://coffeescript.org/[CoffeeScript], http://www.typescriptlang.org/[TypeScript], ...)
 - Good host interoperability.
-- Batteries included (clojure runtime & google closure library)
-- Expressivenes
+- Batteries included (ClojureScript runtime & Google Closure Library)
+- Expressive.
 - Functional.
 - Lisp.
 - Macros.
 - Google Closure Compiler (advanced code compiling with dead code elimination)
-- core.async (coroutines and csp as a library)
+- core.async (coroutines and CSP as a library)
 - ... much more.
 
 
-Setup initial project
----------------------
+Set up initial project
+----------------------
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -65,11 +65,11 @@ cd cljs-workshop
 git checkout step0
 ----
 
-This step consists on...
+This step consists of...
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Initial leiningen project template.
-- Add ring, compojure and other related dependencies.
+- Initial http://leiningen.org/[Leiningen] project template.
+- Add Ring, Compojure and other related dependencies.
 - Create routes and initial application entry point.
 - First run of hello world app.
 
@@ -115,12 +115,12 @@ Initial *project.clj*
 ----
 
 
-Intial ring/compojure handlers
+Intial Ring/Compojure handlers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Ring handler consists in a simple function that receives a req (hash-map) and return a response (also hash-map).
-- Compojure add routing handlers and some response helpers.
-- jetty9 is a embedded http/application server.
+- A https://github.com/ring-clojure/ring/wiki[Ring] handler consists of a simple function that receives a request (hash-map) and returns a response (also hash-map).
+- https://github.com/weavejester/compojure/wiki[Compojure] adds routing handlers and some response helpers.
+- https://github.com/mpenet/jet[Jetty9] is an embedded HTTP/application server.
 
 ._clj/cljsworkshop/core.clj_
 [source, clojure]
@@ -171,11 +171,11 @@ Initial _resources/index.html_ file
 ----
 
 
-Run your first clojure web application
+Run your first Clojure web application
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As we declared the main entry point on our `project.clj`, now we only should
-execute a _run_ command of leiningen:
+As we declared the main entry point in our `project.clj`, now we only need to
+execute the Leiningen _run_ command:
 
 [source, bash]
 ----
@@ -190,7 +190,7 @@ $ lein run
 First steps with ClojureScript
 ------------------------------
 
-Is a little introduction to ClojureScript language. Is a proper step before starting working with it.
+Before we dive into writing ClojureScript, let's start with a little introduction.
 
 Data Types
 ~~~~~~~~~~
@@ -245,13 +245,13 @@ Modules
 Variables
 ~~~~~~~~~
 
-.Top level
+.Top level (vars)
 [source, clojure]
 ----
 (def myvar "foo")
 ----
 
-.Local
+.Local bindings
 [source, clojure]
 ----
 (let [myvar "foo"]
@@ -288,7 +288,7 @@ Functions
 (foo 1 2 3) ;; => "three"
 
 ;; Under advanced compilation direct dispatch to
-;; arity. No arguments object manipulation
+;; arity. No `arguments` object manipulation
 ----
 
 .Variable number of arguments
@@ -320,14 +320,14 @@ Functions
 Equality
 ~~~~~~~~
 
-Is always based on value. CLJS does not have coercive equality.
+Unlike JavaScript, CLJS equality is based on value (not identity) and does not perform type coercion.
 
 [source, javascript]
 ----
 // == operator is coercive
 1 == "1" // => true
 
-// sometimes based on value
+// sometimes based on identity (instead of value)
 {} == {} // => false
 
 ["a"] === ["a"] // => false
@@ -344,7 +344,7 @@ Is always based on value. CLJS does not have coercive equality.
 Immutable locals
 ~~~~~~~~~~~~~~~~
 
-In cljs locals are immutable:
+In cljs, locals are immutable:
 
 .This code throws an error:
 [source, clojure]
@@ -470,24 +470,24 @@ Polymorphism a la carte.
 ;; => "Hello Yen"
 
 (say-hello person-anon)
-;; => "Hello Anonimous"
+;; => "Hello Anonymous"
 ----
 
 
-Interoprability
-~~~~~~~~~~~~~~~
+Interoperability
+~~~~~~~~~~~~~~~~
 
 
-Create javascript objects
+Create JavaScript objects
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.Clojure
+.ClojureScript
 [source, clojure]
 ----
 (def foo (js-obj "bar" "baz"))
 ----
 
-.Javascript
+.JavaScript
 [source, javascript]
 ----
 var foo = {bar: "baz"};
@@ -497,7 +497,7 @@ var foo = {bar: "baz"};
 Property access
 ^^^^^^^^^^^^^^^
 
-.Clojure
+.ClojureScript
 [source, clojure]
 ----
 (set! (.-bar foo) "baz")
@@ -508,7 +508,7 @@ Property access
 (.log js/console (aget foo "abc"))
 ----
 
-.Javascript
+.JavaScript
 [source, javascript]
 ----
 foo.bar = "baz";
@@ -538,7 +538,7 @@ Conversions beween cljs and js
     (clj->js names)))
 ----
 
-.Using reader macro for conver cljs to js:
+.Using reader macro to convert cljs literals to js:
 [source, clojure]
 ----
 (let [a #js [1 2 3]]
@@ -548,7 +548,7 @@ Conversions beween cljs and js
 ;; 2
 ----
 
-NOTE: the #js reader macro is not recursive.
+NOTE: the `#js` reader macro is not recursive.
 
 
 More
@@ -560,8 +560,8 @@ http://himera.herokuapp.com/synonym.html
 First ClojureScript Hello World
 -------------------------------
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -570,7 +570,7 @@ git checkout step1
 ----
 
 
-New dependencies on *project.clj*
+New dependencies in *project.clj*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ._project.clj_
@@ -605,7 +605,7 @@ New dependencies on *project.clj*
 New ClojureScript file.
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-New tree structure on `src/` directory for clojurescript sources.
+New tree structure of `src/cljs/` directory for ClojureScript sources.
 
 [source, text]
 ----
@@ -618,7 +618,7 @@ src/cljs/cljsworkshop/core.cljs
 Hello World in cljs
 ~~~~~~~~~~~~~~~~~~~
 
-A simple main function that sets a helloworld as html in one dom element:
+A simple main function that sets the content of a single DOM element:
 
 ._core.cljs_
 [source, clojure]
@@ -628,7 +628,7 @@ A simple main function that sets a helloworld as html in one dom element:
 
 (defn main
   []
-  (let [content "Hello World from Clojure Script"
+  (let [content "Hello World from ClojureScript"
         element (aget (js/document.getElementsByTagName "main") 0)]
     (set-html! element content)))
 ----
@@ -637,7 +637,7 @@ A simple main function that sets a helloworld as html in one dom element:
 *index.html* changes
 ~~~~~~~~~~~~~~~~~~~~
 
-Adapt our template for make it compatible for our example:
+Adapt our template to make it compatible with our example:
 
 [source, html]
 ----
@@ -666,12 +666,12 @@ First DOM events
 Introduction
 ~~~~~~~~~~~~
 
-This section shows a basic way to access to dom and dom events using
-google closure library.
+This section shows a basic way to access DOM elements and events by using
+the https://developers.google.com/closure/library/[Google Closure Library].
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -683,14 +683,14 @@ git checkout step2
 *index.html* changes
 ~~~~~~~~~~~~~~~~~~~~
 
-Adapt our initial template to something that we can use for dom events
-examples. It consists in two pieces:
+Adapt our initial template to something that we can use for DOM event
+examples. It consists of two pieces:
 
-- One button for increment the counter.
-- One span for show the current value of counter.
+- One `<button>` to increment the counter.
+- One `<span>` to show the current value of the counter.
 
 
-._/resources/index.html_
+._resources/index.html_
 [source, html]
 ----
 <main>
@@ -735,10 +735,10 @@ Change the main function to something like this:
 New stuff
 ~~~~~~~~~
 
-- ClojureScript uses Google Closure Library for modules/namespace: *each ClojureScript file reprensents a google closure module*
-- The `:require` statement on `ns` can loads any google closure module or your defined module that the compiler can find in the path (see _project.clj_ for path...)
-- Google Closure Library comes with ClojureScript. You don't need add it as dependency.
-- Works in advanced mode of google closure compiler (that eliminates unused code).
+- ClojureScript uses Google Closure Library for modules/namespace: *each ClojureScript file represents a Google Closure module*
+- The `:require` statement on `ns` can load any Google Closure module or your defined module that the compiler can find on the path (see `:asset-path` in _project.clj_...)
+- Google Closure Library comes with ClojureScript. You don't need to add it as dependency.
+- Works in advanced mode of https://developers.google.com/closure/compiler/[Google Closure Compiler] (that eliminates unused code).
 
 
 Routing in the browser
@@ -747,14 +747,14 @@ Routing in the browser
 Introduction
 ~~~~~~~~~~~~
 
-Little preview of routing in the browser. Some javascript frameworks comes with own solution, but in
-this case we simply use an library dedicated to routing: secretary.
+Some JavaScript frameworks come with their own solution, but in
+this case we simply use a library dedicated to routing: https://github.com/gf3/secretary[secretary].
 
-Clojurescript community have other libraries but this one is the most easy understand for newcomers.
+The ClojureScript community has built other libraries, but this one is the easiest for newcomers to understand.
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -822,26 +822,26 @@ Adapt our cljs code to something like this:
 New stuff
 ~~~~~~~~~
 
-- ClojureScript macros should be written in Clojure (not ClojureScript) but should emit ClojureScript code.
-- Should be imported separatedly, using `(:require-macros ...)` statement on `ns`.
-- Google closure classes should be imported with `(:import ...)` statement.
+- ClojureScript macros are written in Clojure (not ClojureScript) but emit ClojureScript code.
+- Should be imported separately, using `(:require-macros ...)` statement on `ns`.
+- Google Closure classes should be imported with `(:import ...)` statement.
 
 
-First steps with Ajax
+First steps with AJAX
 ---------------------
 
 Introduction
 ~~~~~~~~~~~~
 
-This step introduces some experiments with ajax. It uses a google closure library facilities
-for make easy JSONP requests to the wikipedia.
+This step introduces some experiments with AJAX. It uses a Google Closure Library facility
+to make JSONP requests to http://en.wikipedia.org/w/api.php[Wikipedia].
 
-This is a simple demostration on how can it be done, using plain callback style code. But in future
-step you will discover better ways to do it.
+This is a simple demonstration of how can it be done, using plain callback style code. But in a future
+step, you will discover better ways to do it.
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -904,25 +904,25 @@ git checkout step4
 Introduction to core.async
 --------------------------
 
-Is a CSP library with steroids.
+https://github.com/clojure/core.async[core.async] is a http://en.wikipedia.org/wiki/Communicating_sequential_processes[Communicating Sequential Processes/CSP] library on steroids.
 
 
-Async code looks sync
-~~~~~~~~~~~~~~~~~~~~~
+Async code that looks sync
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Before start with core.async, we will try to solve one simple problem:
+Before starting with core.async, we will try to solve one simple problem:
 
-1. Request 1 url page.
-2. Wait 1second
-3. Request 2 url page.
-4. Return result both results.
+1. Request one URL.
+2. Wait 1 second.
+3. Request a second URL.
+4. Return both results.
 
 
 Solution using ES5
 ^^^^^^^^^^^^^^^^^^
 
-Let start introducing a problem using ES5 (EcmaScript 5) or shortly javascript of
-today. For it, firstly define the following utils functions:
+Let's start by introducing a problem using https://es5.github.io/[ES5] (ECMAScript 5) or shortly JavaScript of
+today. Let's define the following util functions:
 
 [source, javascript]
 ----
@@ -965,7 +965,7 @@ function doStuff() {
 }
 ----
 
-.Now you can use it so:
+.Now you can use it like so:
 [source, javascript]
 ----
 doStuff().then(function(result) {
@@ -974,7 +974,7 @@ doStuff().then(function(result) {
 });
 ----
 
-Obviously, it can be done better, but nobody will save us from callbacs.
+Obviously, it can be done better, but nobody will save us from callbacks.
 
 
 Solution using ES7
@@ -996,7 +996,7 @@ async function doStuff() {
 }
 ----
 
-.Now you can use it so:
+.Now you can use it like so:
 [source, javascript]
 ----
 (async function() {
@@ -1006,18 +1006,18 @@ async function doStuff() {
 })();
 ----
 
-Now looks much better.
+That looks much better.
 
 Notes:
 
-- This can be "emulated" with generators, but them are not designed for this purpose.
+- This can be "emulated" with generators, but they are not designed for this purpose.
 
 
 Solution using cljs and core.async
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Now having the background of ES7 example, let see same thing but using
-core.async library with clojure script.
+Now having the background of that ES7 example, let's see the same thing using
+core.async library with ClojureScript.
 
 .Define the missing util function.
 [source, clojure]
@@ -1030,7 +1030,7 @@ core.async library with clojure script.
     out))
 ----
 
-.Define the doStuff like function with main logic.
+.Define the doStuff-like function with main logic.
 [source, clojure]
 ----
 (defn do-stuff
@@ -1043,7 +1043,7 @@ core.async library with clojure script.
        :response2 response2})))
 ----
 
-.Now see an example of how use it.
+.Now see an example of how to use it.
 [source, clojure]
 ----
 (go
@@ -1053,7 +1053,7 @@ core.async library with clojure script.
 ----
 
 
-You can see that the code that is async by nature, it seems to be like synchronous.
+You can see that, while this code is async by nature, it is structured and reads a lot like synchronous code.
 
 
 A little reference of basic core.async components
@@ -1068,8 +1068,8 @@ The *go* function/macro
   [... do something asynchronously ...])
 ----
 
-- always return a channel.
-- put in a returned channel the restul of last expression.
+- returns a channel.
+- puts in the returned channel the result of last expression in the body of the `go` block.
 - executes asynchronously.
 
 
@@ -1082,9 +1082,10 @@ The *chan* function
 ----
 
 - creates a new channel
-- does not support nil values
-- nil return value means channel is closed
-- support different buffering strategies: fixed size, unbound (default), sliding, dropping.
+- write to the channel with `put!` and `>!` (see below)
+- read from the channel with `take!` and `<!` (see below)
+- `nil` values cannot be written to or read from channels
+- supports different buffering strategies: fixed size, unbound (default), sliding window, dropping.
 
 
 The *<!* and *>!* functions
@@ -1099,8 +1100,9 @@ The *<!* and *>!* functions
 
 - `<!` represents a callback-less `take!`
 - `>!` represents a callback-less `put!`
-- in clojure them have blocking version of them: `<!!` and `>!!` and they does not
-  requires of go macro, because they blocks the current thread.
+- in Clojure, there are blocking versions, `<!!` and `>!!`, that can be used
+  outside of a `go` block; instead they block the current thread.
+- `take!` and `<!` return `nil` if the input channel is closed.
 
 
 Other resources
@@ -1113,18 +1115,18 @@ Other resources
 - http://www.lispcast.com/elm-frp-in-core-async
 
 
-Ajax with core.async
+AJAX with core.async
 --------------------
 
 Introduction
 ~~~~~~~~~~~~
 
-This step tries reproduce the examples from step4 (ajax related) but using core.async
-for make the logic look like sync, removing visually accidental complexity of continuations/callbacks.
+This step tries to reproduce the examples from step4 (AJAX-related) but using core.async
+to make the logic look synchronous, improving readability and eliminating the accidental complexity of explicit continuations/callbacks.
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -1136,7 +1138,7 @@ git checkout step5
 Why
 ~~~
 
-- Callbacks sucks.
+- Callbacks suck.
 - Unclear execution flow.
 - We can do it better!
 - with core.async, async code looks sync ;)
@@ -1145,7 +1147,7 @@ Why
 Add *core.async* dependency
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Add the corresponding dependency of core.async on our project.clj:
+Add the core.async dependency to our project.clj:
 
 ._project.clj_
 [source, clojure]
@@ -1158,7 +1160,7 @@ Add the corresponding dependency of core.async on our project.clj:
 *core.cljs* changes
 ~~~~~~~~~~~~~~~~~~~
 
-Convert our code from previos step to something like this:
+Convert our code from the previous step to something like this:
 
 .Partial content from _core.cljs_
 [source, clojure]
@@ -1207,11 +1209,11 @@ Convert our code from previos step to something like this:
 
 Now the code looks sync:
 
-1. Waits a click.
-2. Make a request to wikipedia.
-3. Renders result.
+1. Wait for a click.
+2. Make a request to Wikipedia.
+3. Render result.
 
-A synchronous code makes it easier to reason about itself.
+Synchronous code is easier to read and reason about.
 
 
 Hello World from Om component
@@ -1220,20 +1222,20 @@ Hello World from Om component
 Introduction
 ~~~~~~~~~~~~
 
-This is a first step that introduces *Om*.
+This is the first step that introduces https://github.com/omcljs/om/wiki[*Om*].
 
 Why:
 ^^^^
 
-- Reactjs (functional approach for rendering dom)
+- https://facebook.github.io/react/[React] (functional approach for rendering DOM).
 - Global state management facilities built in.
-- Customizable semantics. Fine grained control over how components store state.
+- Customizable semantics. Fine-grained control over how components store state.
 - Out of the box snapshotable and undoable and these operations have no implementation
   complexity and little overhead.
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -1253,10 +1255,10 @@ Add dependencies
 ----
 
 
-First om component
+First Om component
 ~~~~~~~~~~~~~~~~~~
 
-Before see a more complex app, we'll try understand the basic of om components.
+Before we look at a more complex app, we'll try understand the basics of Om components.
 
 [source, clojure]
 ----
@@ -1282,15 +1284,15 @@ Before see a more complex app, we'll try understand the basic of om components.
 
 *_reify_, what is this?*
 
-_reify_ creates an anonymos object that implement one or more protocols.
+_reify_ creates an anonymous object that implement one or more protocols.
 
-_om_ components consists in any object that implements the `om/IRender` or
+_Om_ components consist of any object that implements the `om/IRender` or
 `om/IRenderState` protocols. Implementations for other protocols is optional.
 
-In previous examples we have used a few number of protocols. Om comes with few other
-but them comes out of this first example scope.
+In previous examples, we have used a few protocols. Om comes with a few others,
+but those are out of scope for this first example.
 
-*Now, having defined a compoment, it a time to mount it.
+*Now, having defined a compoment, it's time to mount it.
 
 [source, clojure]
 ----
@@ -1309,14 +1311,14 @@ Time traveling with Om
 Introduction
 ~~~~~~~~~~~~
 
-- The state of aplication is serializable, that makes easy and in deterministic way to reproduce
-  a concrete state of the application.
-- The union of ClojureScript and Reactjs makes some task, that is usually considered very complex,
-  very easy and painless, such as the time traveling or the undo in a few lines of code.
+- The state of the application is serializable, which makes it easy to deterministically reproduce
+  the concrete state of the application.
+- The union of ClojureScript and React makes some tasks, those often considered quite complex,
+  easy and painless--such as time traveling or undo in a few lines of code.
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -1328,7 +1330,7 @@ git checkout step7
 How it works
 ~~~~~~~~~~~~
 
-Desgining the application with global state management facilities of om, we can easy make a
+Desgining the application with the global state management facilities of Om, we can easily make a
 snapshot of the current state.
 
 In Clojure(Script) an atom can be listened for changes:
@@ -1352,10 +1354,10 @@ In Clojure(Script) an atom can be listened for changes:
         (swap! undo-state #(update-in % [:entries] conj n))))))
 ----
 
-Now, each change in our application, is saved as snapshot in an other atom, and
-with simple button we can revert the last change and restore the previous one.
+Now, each change in our application state is saved as a snapshot to another atom, and
+with the press of a button we can revert the last change and restore the previous state.
 
-.For it, we are created an other om component...
+.For it, we create another Om component...
 [source, clojure]
 ----
 (defn do-undo
@@ -1389,12 +1391,13 @@ Persisting Om state
 Introduction
 ~~~~~~~~~~~~
 
-Now having experimented with timetraveling, let's try an little experimet making the state persistent.
-For it we will use the previous example and html5 localstorage.
+Now having experimented with time traveling, let's try an experiment in making the state persistent.
+We will use the previous example and HTML5 https://developer.mozilla.org/en-US/docs/Web/API/Storage/LocalStorage[Local Storage]
+(via the https://funcool.github.io/hodgepodge/[hodgepodge] library).
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -1426,7 +1429,7 @@ Add the persistence logic to our tasklist app
 ----
 
 
-.Add additional watcher to tasklist-state atom responsible of the persistence
+.Add additional watcher to tasklist-state atom to handle persistence
 [source, clojure]
 ----
 ;; Watch tasklist-state changes and
@@ -1437,7 +1440,7 @@ Add the persistence logic to our tasklist app
     (assoc! local-storage :taskliststate n)))
 ----
 
-.Add code for restore stored state on app initialization.
+.Add code to restore stored state on app initialization.
 [source, clojure]
 ----
 ;; Watch tasklist-state changes and
@@ -1449,24 +1452,24 @@ Add the persistence logic to our tasklist app
 ----
 
 
-Bonus: browser enabled repl
+Bonus: browser-enabled REPL
 ---------------------------
 
 Introduction
 ~~~~~~~~~~~~
 
 One of the reasons that Clojure rocks is that it has a REPL which gives developers
-the most dynamic development experience possible. We would like to support this 
+the most dynamic development experience possible. We would like to support this
 dynamic development experience in every environment where JavaScript runs.
 
-There are many interesting environments in which JavaScript can run. And clojurescript
-offers an abstraction for run a repl in different evaluation environments.
+There are many interesting environments in which JavaScript can run. And ClojureScript
+offers an abstraction for running a REPL in those different evaluation environments.
 
-*In this section we will see, how to use a browser as evaluation environment.*
+*In this section, we will see how to use a browser as an evaluation environment.*
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -1475,8 +1478,8 @@ git checkout step9
 ----
 
 
-Add a little snippet of code to you cljs main file
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Add a little snippet of code to your cljs main file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 [source, clojure]
 ----
@@ -1488,7 +1491,7 @@ Add a little snippet of code to you cljs main file
 ----
 
 
-Crete a repl setup file
+Crete a REPL setup file
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .*repl_browser.clj*
@@ -1509,7 +1512,7 @@ Crete a repl setup file
 Optionally create a helper script
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-That helps for start the repl easy.
+This makes it easy to start the repl.
 
 .*start-browserrepl.sh*
 [source, clojure]
@@ -1518,7 +1521,7 @@ That helps for start the repl easy.
 rlwrap lein trampoline run -m clojure.main repl_browser.clj
 ----
 
-Add exection permissions:
+Add execution permissions:
 
 [source, bash]
 ----
@@ -1526,10 +1529,10 @@ chmod +x start-browserrepl.sh
 ----
 
 
-Start the repl
+Start the REPL
 ~~~~~~~~~~~~~~
 
-Using the previosly created shell script:
+Using the previously-created shell script:
 
 [source, bash]
 ----
@@ -1541,10 +1544,10 @@ To quit, type: :cljs/quit
 
 And now navigate to your public page!
 
-It will automatically connects to the repl and you will be able evaluate clojurescript 
+It will automatically connect to the REPL and you will be able evaluate ClojureScript
 code in the browser.
 
-.Try evaluate the current app state
+.Try evaluating the current app state
 [source, clojure]
 ----
 cljs.user=> (in-ns 'cljsworkshop.core)
@@ -1555,23 +1558,23 @@ nil
 ----
 
 
-Bonus: standalone repl
+Bonus: standalone REPL
 ----------------------
 
-Continue in *step9*
+Continue from *step9*
 
 
 Introduction
 ~~~~~~~~~~~~
 
-Browser repl is awesome if you are building web app, but it is slightly tedious if
-you are building a library, requiring a browser for something that not needs it.
+Browser-enabled REPL is awesome if you are building a web app, but it is slightly tedious if
+you are building a library, requiring a browser for something that doesn't need it.
 
-For it, exists other evaluation environments like nodejs or java8 nashorn javascript
-engine. You can start a nodejs repl (as example) much easier that browser repl.
+Instead, we can use another evaluation environment like https://nodejs.org/[Node.js] or Java 8 http://en.wikipedia.org/wiki/Nashorn_(JavaScript_engine)[Nashorn] JavaScript
+engine. You can start a Node.js REPL (for example) much easier than a browser-enabled REPL.
 
 
-Crete a repl setup file
+Crete a REPL setup file
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .*repl_nodejs.clj*
@@ -1592,7 +1595,7 @@ Crete a repl setup file
 Optionally create a helper script
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-That helps for start the repl easy.
+This makes it easy to start the repl.
 
 .*start-noderepl.sh*
 [source, clojure]
@@ -1601,7 +1604,7 @@ That helps for start the repl easy.
 rlwrap lein trampoline run -m clojure.main repl_nodejs.clj
 ----
 
-Add exection permissions:
+Add execution permissions:
 
 [source, bash]
 ----
@@ -1609,10 +1612,10 @@ chmod +x start-noderepl.sh
 ----
 
 
-Start the repl and evaluate cljs
+Start the REPL and evaluate cljs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Using the previosly created shell script:
+Using the previously-created shell script:
 
 [source, bash]
 ----
@@ -1626,21 +1629,21 @@ ClojureScript:cljs.user> (str/lower-case "Foo Bar")
 ----
 
 
-Bonus: production ready builds
+Bonus: production-ready builds
 ------------------------------
 
 Introduction
 ~~~~~~~~~~~~
 
-At this moment, we have compiled clojurescript for development friendly environment. And
+Up to this point, we have only compiled ClojureScript for development-friendly environments. And
 it is ok, but now it's time to deploy our application.
 
-As we known, clojurescript uses google closure as compiler. Let see how we can configure
-the production ready builds.
+As we know, ClojureScript uses the Google Closure Compiler. Let's see how we can configure
+the production-ready builds.
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -1652,7 +1655,7 @@ git checkout step10
 Build configuration
 ~~~~~~~~~~~~~~~~~~~
 
-Replace your old build configuration on your *project.clj* with this:
+Replace your old build configuration in your *project.clj* with this:
 
 
 [source, clojure]
@@ -1681,12 +1684,12 @@ Replace your old build configuration on your *project.clj* with this:
               :pretty-print false}}]})
 ----
 
-The *devel* is a existing one, and *prod* is a new created. Observe the differences:
+*devel* is the existing build; *prod* is the new one. Observe the differences:
 
-- `:optimizations` is not set to `:advanced`
+- `:optimizations` is set to `:advanced`
 - `:pretty-print` is set to `false`
 
-Very easy, not run the compiler in *prod* mode:
+Very easy; now run the compiler in *prod* mode:
 
 [source, text]
 ----
@@ -1696,31 +1699,31 @@ Compiling "resources/public/js/app.js" from ["src/cljs"]...
 Successfully compiled "resources/public/js/app.js" in 17.396 seconds.
 ----
 
-And observe that your web is running like with previos compilation mode but
-loads only one little js.
+And observe that your app is running like with previous compilation mode but
+loads only one little .js file.
 
 
-Bonus: using third party libraries
+Bonus: using third-party libraries
 ----------------------------------
 
 Introduction
 ~~~~~~~~~~~~
 
-Is well known that not all third party libraries like jQuery, momentjs or react works
-out of the box with closure compiler.
+Is well known that not all third-party libraries like https://jquery.com/[jQuery], http://momentjs.com/[Moment.js] or React work
+out of the box with the Google Closure compiler.
 
-But is not a problem. Clojurescript thanks to some closure compiler options allow easy
-path for use external libraries.
+But it is not a problem. ClojureScript, thanks to some Closure compiler options, has the
+ability to use external libraries.
 
-For this purpose it exposes `:foreign-libs` and `:externs` compiler options.
+For this purpose it exposes the `:foreign-libs` and `:externs` compiler options.
 
-The first one, allows setup the dependencies and the module for third party library. And
-the second allows setup a file that helps closure compiler to not mangling symbol names
-that corresponds to third party library usage.
+The first one allows you to declare dependencies and name the Closure module for the third-party library.
+The second allows you to provide a file that helps the Closure compiler avoid mangling symbol names
+for the third-party library's public API.
 
 
-Let start with
-~~~~~~~~~~~~~~
+Let's start with
+~~~~~~~~~~~~~~~~
 
 [source, text]
 ----
@@ -1729,10 +1732,10 @@ git checkout step11
 ----
 
 
-Integrating momentjs
-~~~~~~~~~~~~~~~~~~~~
+Integrating Moment.js
+~~~~~~~~~~~~~~~~~~~~~
 
-Add this options to your build configurations:
+Add these options to your build configurations:
 
 [source, clojure]
 ----
@@ -1743,17 +1746,16 @@ Add this options to your build configurations:
 :closure-warnings {:externs-validation :off}
 ----
 
-Externs file is a file with special only definition javascript. They are very tedios to write
-and in this case we can use the minified source as externs file.
+An "externs" file is a JavaScript source file used to specify the public API of a library. They are very tedious to write,
+but in this case, we can use the minified js source as an externs file.
 
-Using the minified source as externs file raises a lot of warnings, that in majority of cases
-we can ignore.
+Using the minified source as an externs file raises a lot of warnings that we can ignore in the majority of cases.
 
 
-Use momentjs in our app
-~~~~~~~~~~~~~~~~~~~~~~~
+Use Moment.js in our app
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-For use the momentjs in our application, you should add it in
+To use Moment.js in our application, you should add it to
 our require part of the ns macro:
 
 [source, clojure]
@@ -1764,7 +1766,7 @@ our require part of the ns macro:
 ----
 
 Independently of the alias used in requirement statement, the moment variable is set globally
-and it should be used through the js special prefix. Like this
+and it should be used through the `js/` special prefix. Like this:
 
 [source, clojure]
 ----
