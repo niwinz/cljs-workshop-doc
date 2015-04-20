@@ -38,7 +38,7 @@ Transversal:
 Why ClojureScript
 -----------------
 
-- Clojure is designed as guest language (unlike funscript or similar, it not intends to translate
+- ClojureScript is designed as guest language (unlike funscript or similar, it not intends to translate
   host code to js, you can not import java.util.Date on clojurescript...)
 - Language with own semantics (not like coffeescript, typescript, ...)
 - Good host interoperability.
