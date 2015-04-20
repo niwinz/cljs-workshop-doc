@@ -477,7 +477,7 @@ Interoprability
 ~~~~~~~~~~~~~~~
 
 
-Create javascript objects
+Create JavaScript objects
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .ClojureScript
@@ -486,7 +486,7 @@ Create javascript objects
 (def foo (js-obj "bar" "baz"))
 ----
 
-.Javascript
+.JavaScript
 [source, javascript]
 ----
 var foo = {bar: "baz"};
@@ -507,7 +507,7 @@ Property access
 (.log js/console (aget foo "abc"))
 ----
 
-.Javascript
+.JavaScript
 [source, javascript]
 ----
 foo.bar = "baz";
@@ -746,7 +746,7 @@ Routing in the browser
 Introduction
 ~~~~~~~~~~~~
 
-Little preview of routing in the browser. Some javascript frameworks comes with own solution, but in
+Little preview of routing in the browser. Some JavaScript frameworks comes with own solution, but in
 this case we simply use an library dedicated to routing: secretary.
 
 ClojureScript community have other libraries but this one is the most easy understand for newcomers.
@@ -920,7 +920,7 @@ Before start with core.async, we will try to solve one simple problem:
 Solution using ES5
 ^^^^^^^^^^^^^^^^^^
 
-Let start introducing a problem using ES5 (EcmaScript 5) or shortly javascript of
+Let start introducing a problem using ES5 (EcmaScript 5) or shortly JavaScript of
 today. For it, firstly define the following utils functions:
 
 [source, javascript]
@@ -1566,7 +1566,7 @@ Introduction
 Browser repl is awesome if you are building web app, but it is slightly tedious if
 you are building a library, requiring a browser for something that not needs it.
 
-For it, exists other evaluation environments like nodejs or java8 nashorn javascript
+For it, exists other evaluation environments like nodejs or java8 nashorn JavaScript
 engine. You can start a nodejs repl (as example) much easier that browser repl.
 
 
@@ -1742,7 +1742,7 @@ Add this options to your build configurations:
 :closure-warnings {:externs-validation :off}
 ----
 
-Externs file is a file with special only definition javascript. They are very tedios to write
+Externs file is a file with special only definition JavaScript. They are very tedios to write
 and in this case we can use the minified source as externs file.
 
 Using the minified source as externs file raises a lot of warnings, that in majority of cases
