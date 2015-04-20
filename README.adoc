@@ -311,9 +311,9 @@ Functions
            baz "default2"}}]
   (str bar "-" baz))
 
-(foo :bar 1 :baz 2) ;; => "1-2"
-(foo :bar 1) ;; => "1-default2"
 (foo) ;; => "default1-default2"
+(foo :bar 1) ;; => "1-default2"
+(foo :bar 1 :baz 2) ;; => "1-2"
 ----
 
 
@@ -1296,7 +1296,7 @@ but them comes out of this first example scope.
 ----
 (defonce state {:message "Hello world from global state."})
 
-;; "app" is a id of dom element at index.html
+;; "app" is the id of a dom element in index.html
 (let [el (gdom/getElement "app")]
   (om/root mycomponent state {:target el}))
 ----
@@ -1343,7 +1343,7 @@ In Clojure(Script) an atom can be listened for changes:
 ;; initial @tasklist-state.
 (def undo-state (atom {:entries [@tasklist-state]})
 
-;; Watch a tasklist-state changes and snapshot them
+;; Watch tasklist-state changes and snapshot them
 ;; into undo-state.
 (add-watch tasklist-state :history
   (fn [_ _ _ n]
@@ -1361,7 +1361,7 @@ with simple button we can revert the last change and restore the previous one.
 (defn do-undo
   [app]
   (when (> (count (:entries @app)) 1)
-    ;; remove the last spapshot from the undo list.
+    ;; remove the last snapshot from the undo list.
     (om/transact! app :entries pop)
 
     ;; Restore the last snapshot into tasklist
@@ -1430,8 +1430,8 @@ Add the persistence logic to our tasklist app
 [source, clojure]
 ----
 ;; Watch tasklist-state changes and
-;; persists them in local storege.
-(add-watch tasklist-state :persistece
+;; persists them in local storage.
+(add-watch tasklist-state :persistence
   (fn [_ _ _ n]
     (println "Event:" n)
     (assoc! local-storage :taskliststate n)))
