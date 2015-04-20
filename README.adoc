@@ -18,15 +18,15 @@ It includes:
 - Setup initial Clojure app layout.
 - Setup initial ClojureScript app layout.
 - First contact to ClojureScript language.
-- Working with dom events.
+- Working with DOM events.
 - Working with routing in the browser.
-- Working with ajax requests.
+- Working with AJAX requests.
 - First contact with core.async.
-- Working with events and ajax using core.async.
+- Working with events and AJAX using core.async.
 - First contact with Om/React.
 - Working with Om and timetraveling.
 - Working with Om and peristent state.
-- Little bonus: browser enabled repl.
+- Little bonus: browser enabled REPL.
 
 Transversal:
 
@@ -119,7 +119,7 @@ Intial Ring/Compojure handlers
 
 - https://github.com/ring-clojure/ring/wiki[Ring] handler consists in a simple function that receives a req (hash-map) and return a response (also hash-map).
 - https://github.com/weavejester/compojure/wiki[Compojure] add routing handlers and some response helpers.
-- https://github.com/mpenet/jet[Jetty9] is a embedded http/application server.
+- https://github.com/mpenet/jet[Jetty9] is a embedded HTTP/application server.
 
 ._clj/cljsworkshop/core.clj_
 [source, clojure]
@@ -617,7 +617,7 @@ src/cljs/cljsworkshop/core.cljs
 Hello World in cljs
 ~~~~~~~~~~~~~~~~~~~
 
-A simple main function that sets a helloworld as html in one dom element:
+A simple main function that sets a helloworld as HTML in one DOM element:
 
 ._core.cljs_
 [source, clojure]
@@ -665,7 +665,7 @@ First DOM events
 Introduction
 ~~~~~~~~~~~~
 
-This section shows a basic way to access to dom and dom events using
+This section shows a basic way to access to DOM and DOM events using
 https://developers.google.com/closure/library/[Google Closure Library].
 
 
@@ -682,7 +682,7 @@ git checkout step2
 *index.html* changes
 ~~~~~~~~~~~~~~~~~~~~
 
-Adapt our initial template to something that we can use for dom events
+Adapt our initial template to something that we can use for DOM events
 examples. It consists in two pieces:
 
 - One button for increment the counter.
@@ -826,13 +826,13 @@ New stuff
 - Google Closure classes should be imported with `(:import ...)` statement.
 
 
-First steps with Ajax
+First steps with AJAX
 ---------------------
 
 Introduction
 ~~~~~~~~~~~~
 
-This step introduces some experiments with ajax. It uses a Google Closure Library facilities
+This step introduces some experiments with AJAX. It uses a Google Closure Library facilities
 for make easy JSONP requests to http://en.wikipedia.org/w/api.php[Wikipedia].
 
 This is a simple demostration on how can it be done, using plain callback style code. But in future
@@ -1112,13 +1112,13 @@ Other resources
 - http://www.lispcast.com/elm-frp-in-core-async
 
 
-Ajax with core.async
+AJAX with core.async
 --------------------
 
 Introduction
 ~~~~~~~~~~~~
 
-This step tries reproduce the examples from step4 (ajax related) but using core.async
+This step tries reproduce the examples from step4 (AJAX related) but using core.async
 for make the logic look like sync, removing visually accidental complexity of continuations/callbacks.
 
 
@@ -1224,7 +1224,7 @@ This is a first step that introduces https://github.com/omcljs/om/wiki[*Om*].
 Why:
 ^^^^
 
-- https://facebook.github.io/react/[React] (functional approach for rendering dom)
+- https://facebook.github.io/react/[React] (functional approach for rendering DOM)
 - Global state management facilities built in.
 - Customizable semantics. Fine grained control over how components store state.
 - Out of the box snapshotable and undoable and these operations have no implementation
@@ -1449,7 +1449,7 @@ Add the persistence logic to our tasklist app
 ----
 
 
-Bonus: browser enabled repl
+Bonus: browser enabled REPL
 ---------------------------
 
 Introduction
@@ -1460,7 +1460,7 @@ the most dynamic development experience possible. We would like to support this
 dynamic development experience in every environment where JavaScript runs.
 
 There are many interesting environments in which JavaScript can run. And ClojureScript
-offers an abstraction for run a repl in different evaluation environments.
+offers an abstraction for run a REPL in different evaluation environments.
 
 *In this section we will see, how to use a browser as evaluation environment.*
 
@@ -1488,7 +1488,7 @@ Add a little snippet of code to you cljs main file
 ----
 
 
-Crete a repl setup file
+Crete a REPL setup file
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .*repl_browser.clj*
@@ -1509,7 +1509,7 @@ Crete a repl setup file
 Optionally create a helper script
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-That helps for start the repl easy.
+That helps for start the REPL easy.
 
 .*start-browserrepl.sh*
 [source, clojure]
@@ -1526,7 +1526,7 @@ chmod +x start-browserrepl.sh
 ----
 
 
-Start the repl
+Start the REPL
 ~~~~~~~~~~~~~~
 
 Using the previosly created shell script:
@@ -1541,7 +1541,7 @@ To quit, type: :cljs/quit
 
 And now navigate to your public page!
 
-It will automatically connects to the repl and you will be able evaluate ClojureScript
+It will automatically connects to the REPL and you will be able evaluate ClojureScript
 code in the browser.
 
 .Try evaluate the current app state
@@ -1555,7 +1555,7 @@ nil
 ----
 
 
-Bonus: standalone repl
+Bonus: standalone REPL
 ----------------------
 
 Continue in *step9*
@@ -1564,14 +1564,14 @@ Continue in *step9*
 Introduction
 ~~~~~~~~~~~~
 
-Browser repl is awesome if you are building web app, but it is slightly tedious if
+Browser REPL is awesome if you are building web app, but it is slightly tedious if
 you are building a library, requiring a browser for something that not needs it.
 
 For it, exists other evaluation environments like https://nodejs.org/[Node.js] or Java 8 http://en.wikipedia.org/wiki/Nashorn_(JavaScript_engine)[Nashorn] JavaScript
-engine. You can start a Node.js repl (as example) much easier that browser repl.
+engine. You can start a Node.js REPL (as example) much easier that browser REPL.
 
 
-Crete a repl setup file
+Crete a REPL setup file
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .*repl_nodejs.clj*
@@ -1592,7 +1592,7 @@ Crete a repl setup file
 Optionally create a helper script
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-That helps for start the repl easy.
+That helps for start the REPL easy.
 
 .*start-noderepl.sh*
 [source, clojure]
@@ -1609,7 +1609,7 @@ chmod +x start-noderepl.sh
 ----
 
 
-Start the repl and evaluate cljs
+Start the REPL and evaluate cljs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Using the previosly created shell script:
