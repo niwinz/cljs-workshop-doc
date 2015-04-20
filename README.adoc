@@ -28,9 +28,9 @@ It includes:
 - Working with Om and peristent state.
 - Little bonus: browser-enabled REPL.
 
-Transversal:
+We also touch upon:
 
-- Little touch on Google Closure Library along all tutorial.
+- Google Closure Library along all tutorial.
 - ClojureScript features (not explained on the first contact with language).
 - Some differences between Clojure and ClojureScript.
 
@@ -38,8 +38,8 @@ Transversal:
 Why ClojureScript
 -----------------
 
-- ClojureScript is designed as guest language (unlike https://github.com/ZachBray/FunScript[FunScript] or similar, it not intends to translate
-  host code to js, you can not import java.util.Date on ClojureScript...)
+- ClojureScript is designed as a guest language--unlike https://github.com/ZachBray/FunScript[FunScript] or similar, it doesn't intend to translate
+  host code to JavaScript; you cannot import `java.util.Date` in ClojureScript...
 - Language with own semantics (not like http://coffeescript.org/[CoffeeScript], http://www.typescriptlang.org/[TypeScript], ...)
 - Good host interoperability.
 - Batteries included (ClojureScript runtime & Google Closure Library)
@@ -174,7 +174,7 @@ Run your first Clojure web application
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As we declared the main entry point in our `project.clj`, now we only need to
-execute a _run_ command of Leiningen:
+execute the Leiningen _run_ command:
 
 [source, bash]
 ----
@@ -189,7 +189,7 @@ $ lein run
 First steps with ClojureScript
 ------------------------------
 
-Is a little introduction to ClojureScript language. Is a proper step before starting working with it.
+Before we dive into writing ClojureScript, let's start with a little introduction.
 
 Data Types
 ~~~~~~~~~~
@@ -319,14 +319,14 @@ Functions
 Equality
 ~~~~~~~~
 
-Is always based on value. CLJS does not have coercive equality.
+Unlike JavaScript, CLJS equality is based on value (not identity) and does not perform type coercion.
 
 [source, javascript]
 ----
 // == operator is coercive
 1 == "1" // => true
 
-// sometimes based on value
+// sometimes based on identity (instead of value)
 {} == {} // => false
 
 ["a"] === ["a"] // => false
@@ -343,7 +343,7 @@ Is always based on value. CLJS does not have coercive equality.
 Immutable locals
 ~~~~~~~~~~~~~~~~
 
-In cljs locals are immutable:
+In cljs, locals are immutable:
 
 .This code throws an error:
 [source, clojure]
@@ -617,7 +617,7 @@ src/cljs/cljsworkshop/core.cljs
 Hello World in cljs
 ~~~~~~~~~~~~~~~~~~~
 
-A simple main function that sets a helloworld as HTML in one DOM element:
+A simple main function that sets the content of a single DOM element:
 
 ._core.cljs_
 [source, clojure]
@@ -746,10 +746,10 @@ Routing in the browser
 Introduction
 ~~~~~~~~~~~~
 
-Little preview of routing in the browser. Some JavaScript frameworks come with their own solution, but in
+Some JavaScript frameworks come with their own solution, but in
 this case we simply use a library dedicated to routing: https://github.com/gf3/secretary[secretary].
 
-ClojureScript community have other libraries but this one is the most easy understand for newcomers.
+The ClojureScript community has built other libraries, but this one is the easiest for newcomers to understand.
 
 
 Let's start with
@@ -903,7 +903,7 @@ git checkout step4
 Introduction to core.async
 --------------------------
 
-https://github.com/clojure/core.async[core.async] is a http://en.wikipedia.org/wiki/Communicating_sequential_processes[Communicating Sequential Processes/CSP] library with steroids.
+https://github.com/clojure/core.async[core.async] is a http://en.wikipedia.org/wiki/Communicating_sequential_processes[Communicating Sequential Processes/CSP] library on steroids.
 
 
 Async code that looks sync
@@ -1052,7 +1052,7 @@ core.async library with ClojureScript.
 ----
 
 
-You can see that the code that is async by nature, it seems to be like synchronous.
+You can see that, while this code is async by nature, it is structured and reads a lot like synchronous code.
 
 
 A little reference of basic core.async components
@@ -1067,8 +1067,8 @@ The *go* function/macro
   [... do something asynchronously ...])
 ----
 
-- always return a channel.
-- put in a returned channel the result of last expression.
+- returns a channel.
+- puts in the returned channel the result of last expression in the body of the `go` block.
 - executes asynchronously.
 
 
@@ -1081,9 +1081,10 @@ The *chan* function
 ----
 
 - creates a new channel
-- does not support nil values
-- nil return value means channel is closed
-- support different buffering strategies: fixed size, unbound (default), sliding, dropping.
+- write to the channel with `put!` and `>!` (see below)
+- read from the channel with `take!` and `<!` (see below)
+- `nil` values cannot be written to or read from channels
+- supports different buffering strategies: fixed size, unbound (default), sliding window, dropping.
 
 
 The *<!* and *>!* functions
@@ -1098,8 +1099,9 @@ The *<!* and *>!* functions
 
 - `<!` represents a callback-less `take!`
 - `>!` represents a callback-less `put!`
-- in Clojure them have blocking version of them: `<!!` and `>!!` and they does not
-  requires of go macro, because they blocks the current thread.
+- in Clojure, there are blocking versions, `<!!` and `>!!`, that can be used
+  outside of a `go` block; instead they block the current thread.
+- `take!` and `<!` return `nil` if the input channel is closed.
 
 
 Other resources
@@ -1119,7 +1121,7 @@ Introduction
 ~~~~~~~~~~~~
 
 This step tries to reproduce the examples from step4 (AJAX-related) but using core.async
-to make the logic look like sync, removing visually accidental complexity of continuations/callbacks.
+to make the logic look synchronous, improving readability and eliminating the accidental complexity of explicit continuations/callbacks.
 
 
 Let's start with
@@ -1144,7 +1146,7 @@ Why
 Add *core.async* dependency
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Add the corresponding dependency of core.async to our project.clj:
+Add the core.async dependency to our project.clj:
 
 ._project.clj_
 [source, clojure]
@@ -1210,7 +1212,7 @@ Now the code looks sync:
 2. Make a request to Wikipedia.
 3. Render result.
 
-Synchronous code makes it easier to reason about itself.
+Synchronous code is easier to read and reason about.
 
 
 Hello World from Om component
@@ -1308,10 +1310,10 @@ Time traveling with Om
 Introduction
 ~~~~~~~~~~~~
 
-- The state of the application is serializable, that makes it easy and in deterministic way to reproduce
-  a concrete state of the application.
-- The union of ClojureScript and React makes some task, that is usually considered very complex,
-  very easy and painless, such as time traveling or undo in a few lines of code.
+- The state of the application is serializable, which makes it easy to deterministically reproduce
+  the concrete state of the application.
+- The union of ClojureScript and React makes some tasks, those often considered quite complex,
+  easy and painless--such as time traveling or undo in a few lines of code.
 
 
 Let's start with
@@ -1351,8 +1353,8 @@ In Clojure(Script) an atom can be listened for changes:
         (swap! undo-state #(update-in % [:entries] conj n))))))
 ----
 
-Now, each change in our application, is saved as a snapshot in another atom, and
-with simple button we can revert the last change and restore the previous one.
+Now, each change in our application state is saved as a snapshot to another atom, and
+with the press of a button we can revert the last change and restore the previous state.
 
 .For it, we create another Om component...
 [source, clojure]
@@ -1388,7 +1390,7 @@ Persisting Om state
 Introduction
 ~~~~~~~~~~~~
 
-Now having experimented with time traveling, let's try an little experiment making the state persistent.
+Now having experimented with time traveling, let's try an experiment in making the state persistent.
 We will use the previous example and HTML5 https://developer.mozilla.org/en-US/docs/Web/API/Storage/LocalStorage[Local Storage]
 (via the https://funcool.github.io/hodgepodge/[hodgepodge] library).
 
@@ -1509,7 +1511,7 @@ Crete a REPL setup file
 Optionally create a helper script
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-That helps for start the REPL easy.
+This makes it easy to start the repl.
 
 .*start-browserrepl.sh*
 [source, clojure]
@@ -1567,8 +1569,8 @@ Introduction
 Browser-enabled REPL is awesome if you are building a web app, but it is slightly tedious if
 you are building a library, requiring a browser for something that doesn't need it.
 
-For it, exists other evaluation environments like https://nodejs.org/[Node.js] or Java 8 http://en.wikipedia.org/wiki/Nashorn_(JavaScript_engine)[Nashorn] JavaScript
-engine. You can start a Node.js REPL (as example) much easier than a browser REPL.
+Instead, we can use another evaluation environment like https://nodejs.org/[Node.js] or Java 8 http://en.wikipedia.org/wiki/Nashorn_(JavaScript_engine)[Nashorn] JavaScript
+engine. You can start a Node.js REPL (for example) much easier than a browser-enabled REPL.
 
 
 Crete a REPL setup file
@@ -1592,7 +1594,7 @@ Crete a REPL setup file
 Optionally create a helper script
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-That helps for start the REPL easy.
+This makes it easy to start the repl.
 
 .*start-noderepl.sh*
 [source, clojure]
@@ -1632,7 +1634,7 @@ Bonus: production-ready builds
 Introduction
 ~~~~~~~~~~~~
 
-At this moment, we have compiled ClojureScript for development-friendly environments. And
+Up to this point, we have only compiled ClojureScript for development-friendly environments. And
 it is ok, but now it's time to deploy our application.
 
 As we know, ClojureScript uses the Google Closure Compiler. Let's see how we can configure
@@ -1681,7 +1683,7 @@ Replace your old build configuration in your *project.clj* with this:
               :pretty-print false}}]})
 ----
 
-The *devel* is a existing one, and *prod* is a new created. Observe the differences:
+*devel* is the existing build; *prod* is the new one. Observe the differences:
 
 - `:optimizations` is set to `:advanced`
 - `:pretty-print` is set to `false`
@@ -1707,16 +1709,16 @@ Introduction
 ~~~~~~~~~~~~
 
 Is well known that not all third-party libraries like https://jquery.com/[jQuery], http://momentjs.com/[Moment.js] or React work
-out of the box with the Closure compiler.
+out of the box with the Google Closure compiler.
 
-But it is not a problem. ClojureScript thanks to some Closure compiler options allow easy
-path for use external libraries.
+But it is not a problem. ClojureScript, thanks to some Closure compiler options, has the
+ability to use external libraries.
 
 For this purpose it exposes the `:foreign-libs` and `:externs` compiler options.
 
-The first one allows setup the dependencies and the module for third-party library. And
-the second allows setup a file that helps Closure compiler to not mangling symbol names
-that corresponds to third-party library usage.
+The first one allows you to declare dependencies and name the Closure module for the third-party library.
+The second allows you to provide a file that helps the Closure compiler avoid mangling symbol names
+for the third-party library's public API.
 
 
 Let's start with
@@ -1743,11 +1745,10 @@ Add these options to your build configurations:
 :closure-warnings {:externs-validation :off}
 ----
 
-Externs file is a file with special only definition JavaScript. They are very tedious to write
-and in this case we can use the minified source as externs file.
+An "externs" file is a JavaScript source file used to specify the public API of a library. They are very tedious to write,
+but in this case, we can use the minified js source as an externs file.
 
-Using the minified source as externs file raises a lot of warnings, that in majority of cases
-we can ignore.
+Using the minified source as an externs file raises a lot of warnings that we can ignore in the majority of cases.
 
 
 Use Moment.js in our app
