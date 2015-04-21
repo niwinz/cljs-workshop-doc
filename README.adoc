@@ -1377,7 +1377,7 @@ with the press of a button we can revert the last change and restore the previou
     (reset! tasklist-state (last (:entries @undo-state)))))
 
 (defn undo
-  [app owner]
+  [state owner]
   (reify
     om/IRender
     (render [_]
