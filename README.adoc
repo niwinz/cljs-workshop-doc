@@ -623,6 +623,8 @@ A simple main function that sets the content of a single DOM element:
 ._core.cljs_
 [source, clojure]
 ----
+(ns cljsworkshop.core)
+
 (defn set-html! [el content]
   (set! (.-innerHTML el) content))
 
@@ -631,6 +633,8 @@ A simple main function that sets the content of a single DOM element:
   (let [content "Hello World from ClojureScript"
         element (aget (js/document.getElementsByTagName "main") 0)]
     (set-html! element content)))
+
+(main)
 ----
 
 
@@ -729,6 +733,8 @@ Change the main function to something like this:
                      (swap! counter inc)
                      ;; Set new value in display element
                      (set! (.-innerHTML display) @counter)))))
+
+(main)
 ----
 
 
