@@ -1048,8 +1048,8 @@ core.async library with ClojureScript.
 ----
 (go
   (let [result (<! (do-stuff))]
-    (.log js/console (.-response1 result))
-    (.log js/console (.-response2 result))))
+    (.log js/console (:response1 result))
+    (.log js/console (:response2 result))))
 ----
 
 
