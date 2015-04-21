@@ -1682,7 +1682,6 @@ Replace your old build configuration in your *project.clj* with this:
    :compiler {:output-to "resources/public/js/app.js"
               :output-dir "resources/public/js/out-prod"
               :source-map "resources/public/js/app.js.map"
-              :closure-warnings {:externs-validation :off}
               :optimizations :advanced
               :cache-analysis false
               :asset-path "/static/js/out-prod"
